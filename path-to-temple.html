@@ -1,0 +1,928 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Greek Musical Odyssey - Path to Temple</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+        }
+        /* Fade transition */
+        #fade-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 1;
+            z-index: 100;
+            transition: opacity 2s ease;
+            pointer-events: none;
+        }
+    /* Subtitle styling */
+    #subtitle {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 18px;
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 1s ease;
+        text-align: center;
+        max-width: 80%;
+    }
+    
+    /* Dialog box */
+    #dialog-box {
+        position: absolute;
+        bottom: 15%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 2px solid #f5deb3;
+        border-radius: 5px;
+        padding: 20px;
+        color: white;
+        z-index: 95;
+        display: none;
+    }
+    
+    #dialog-text {
+        font-size: 18px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+    
+    #dialog-continue {
+        color: #f5deb3;
+        text-align: right;
+        font-style: italic;
+        cursor: pointer;
+    }
+    
+    /* Interaction prompt */
+    #interaction-prompt {
+        position: absolute;
+        bottom: 5%;
+        right: 5%;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 14px;
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+    
+    /* Info markers */
+    .marker-container {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 10;
+    }
+    
+    .info-marker {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(245, 222, 179, 0.7);
+        border-radius: 50%;
+        border: 2px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 24px;
+        color: #333;
+        animation: pulse 2s infinite;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(245, 222, 179, 0.7);
+        }
+        70% {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 10px rgba(245, 222, 179, 0);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(245, 222, 179, 0);
+        }
+    }
+</style>
+</head>
+<body>
+    <div id="fade-overlay"></div>
+    <div id="subtitle"></div>
+    <div id="interaction-prompt"></div>
+    <div id="dialog-box">
+        <div id="dialog-text">Information about ancient Greek music will appear here.</div>
+        <div id="dialog-continue">Click to continue...</div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+    // Scene Manager Class
+    class SceneManager {
+        constructor() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.renderer = new THREE.WebGLRenderer({ antialias: true });
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setClearColor(0x87CEEB); // Sky blue background
+            this.renderer.shadowMap.enabled = true;
+            document.body.appendChild(this.renderer.domElement);
+            
+            // State tracking
+            this.inCutscene = true;
+            this.inDialog = false;
+            this.playerCanMove = false;
+            this.cutsceneSteps = [];
+            this.currentCutsceneStep = 0;
+            this.currentDialogIndex = 0;
+            this.currentInfoSet = null;
+            
+            // Information points
+            this.infoPoints = [
+                {
+                    position: new THREE.Vector3(-5, 1, -5),
+                    title: "Music in Ancient Greek Society",
+                    texts: [
+                        "In ancient Greece, music was fundamental to education, religious rituals, and social gatherings. The Greeks believed that music had the power to affect human thought and behavior.",
+                        "The concept of 'mousike' encompassed not just sound, but a complete union of melody, poetry, and dance. It was considered essential to proper education and character formation.",
+                        "Music played a crucial role in religious ceremonies, theatrical performances, athletic competitions, and symposia (drinking parties)."
+                    ]
+                },
+                {
+                    position: new THREE.Vector3(5, 1, -12),
+                    title: "Greek Musical Theory",
+                    texts: [
+                        "The Pythagoreans made significant contributions to musical theory, discovering that musical intervals could be expressed as mathematical ratios. This connection between music and mathematics was profound for Greek philosophy.",
+                        "Greeks used a system of 'tetrachords' (four-note sequences) as the building blocks of their scales, which were quite different from our modern major and minor scales.",
+                        "Ancient Greek music was primarily monophonic (single melodic line), though it might be accompanied by a drone or heterophonic variations. Harmony as we understand it today was not yet developed."
+                    ]
+                },
+                {
+                    position: new THREE.Vector3(-4, 1, -20),
+                    title: "Music in Myths and Legends",
+                    texts: [
+                        "Many Greek myths highlight the power of music. Orpheus could charm wild beasts and even persuade Hades with his music. Apollo challenged the satyr Marsyas to a musical contest, while the Muses inspired artistic creation.",
+                        "Music was seen as divine in origin, with Apollo representing the rational, orderly aspects of music (lyre), while Dionysus represented the emotional, ecstatic elements (aulos).",
+                        "The myth of the Sirens warned of music's dangerous, seductive power, while stories of Amphion building Thebes' walls through music showed its creative force."
+                    ]
+                }
+            ];
+            
+            // Dialog sequences
+            this.dialogSequences = {
+                introduction: [
+                    "As you walk along the sacred path to Apollo's temple, you notice ancient inscriptions and reliefs depicting the rich musical tradition of Greece.",
+                    "Look for the glowing markers along the path. They contain knowledge about the role of music in ancient Greek culture.",
+                    "Approach each marker and press E to interact with it. When you're ready to continue to the temple, follow the path to its end."
+                ]
+            };
+            
+            // Player
+            this.player = null;
+            this.playerHeight = 1.7;
+            this.playerVelocity = new THREE.Vector3();
+            this.playerDirection = new THREE.Vector3();
+            this.moveForward = false;
+            this.moveBackward = false;
+            this.moveLeft = false;
+            this.moveRight = false;
+            this.moveSpeed = 0.1;
+            
+            // Interactive objects
+            this.interactiveObjects = [];
+            
+            // DOM Elements
+            this.fadeOverlay = document.getElementById('fade-overlay');
+            this.subtitle = document.getElementById('subtitle');
+            this.interactionPrompt = document.getElementById('interaction-prompt');
+            this.dialogBox = document.getElementById('dialog-box');
+            this.dialogText = document.getElementById('dialog-text');
+            this.dialogContinue = document.getElementById('dialog-continue');
+            
+            // Bind methods
+            this.animate = this.animate.bind(this);
+            this.onWindowResize = this.onWindowResize.bind(this);
+            this.continueDialog = this.continueDialog.bind(this);
+            
+            // Setup event listeners
+            window.addEventListener('resize', this.onWindowResize);
+            document.addEventListener('keydown', this.onKeyDown.bind(this));
+            document.addEventListener('keyup', this.onKeyUp.bind(this));
+            this.dialogContinue.addEventListener('click', this.continueDialog);
+            
+            // Initialize scene
+            this.initScene();
+            
+            // Start animation loop
+            this.animate();
+            
+            // Start fade in and cutscene
+            setTimeout(() => {
+                this.fadeIn();
+                this.startCutscene();
+            }, 500);
+        }
+        
+        // Initialize the scene
+        initScene() {
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            this.scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(-10, 20, 10);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.camera.near = 0.1;
+            directionalLight.shadow.camera.far = 100;
+            directionalLight.shadow.camera.left = -20;
+            directionalLight.shadow.camera.right = 20;
+            directionalLight.shadow.camera.top = 20;
+            directionalLight.shadow.camera.bottom = -20;
+            this.scene.add(directionalLight);
+            
+            // Create ground
+            const groundGeometry = new THREE.PlaneGeometry(50, 100);
+            const groundMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xdcd0ab,  // Sandy color
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+            ground.position.set(0, 0, -25);  // Centering the ground
+            ground.receiveShadow = true;
+            this.scene.add(ground);
+            
+            // Create player
+            const playerGeometry = new THREE.BoxGeometry(0.5, this.playerHeight, 0.5);
+            const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+            this.player = new THREE.Mesh(playerGeometry, playerMaterial);
+            this.player.position.set(0, this.playerHeight / 2, 5);
+            this.player.castShadow = true;
+            this.player.visible = false; // Hide player mesh initially
+            this.scene.add(this.player);
+            
+            // Create path
+            this.createPath();
+            
+            // Create temple in the distance
+            this.createDistantTemple();
+            
+            // Create decorative elements
+            this.createDecorativeElements();
+            
+            // Create info markers
+            this.createInfoMarkers();
+            
+            // Set initial camera position for cutscene
+            this.camera.position.set(0, 10, 15);
+            this.camera.lookAt(0, 0, -25);
+        }
+        
+        // Create path to temple
+        createPath() {
+            // Main path
+            const pathGeometry = new THREE.PlaneGeometry(5, 50);
+            const pathMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xd1c09f,  // Lighter sandy color
+                roughness: 0.7,
+                metalness: 0.1
+            });
+            const path = new THREE.Mesh(pathGeometry, pathMaterial);
+            path.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+            path.position.set(0, 0.01, -25);  // Slightly above ground to prevent z-fighting
+            path.receiveShadow = true;
+            this.scene.add(path);
+            
+            // Path borders
+            const borderGeometry = new THREE.BoxGeometry(0.5, 0.2, 50);
+            const borderMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xa89d7c,  // Darker than path
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            
+            const leftBorder = new THREE.Mesh(borderGeometry, borderMaterial);
+            leftBorder.position.set(-2.75, 0.1, -25);
+            leftBorder.receiveShadow = true;
+            leftBorder.castShadow = true;
+            this.scene.add(leftBorder);
+            
+            const rightBorder = new THREE.Mesh(borderGeometry, borderMaterial);
+            rightBorder.position.set(2.75, 0.1, -25);
+            rightBorder.receiveShadow = true;
+            rightBorder.castShadow = true;
+            this.scene.add(rightBorder);
+        }
+        
+        // Create distant view of temple
+        createDistantTemple() {
+            // Temple base
+            const baseGeometry = new THREE.BoxGeometry(15, 1, 10);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.set(0, 0, -55);
+            base.castShadow = true;
+            base.receiveShadow = true;
+            this.scene.add(base);
+            
+            // Temple columns
+            const columnGeometry = new THREE.CylinderGeometry(0.5, 0.5, 5, 16);
+            const columnMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
+            
+            // Front columns
+            for (let i = 0; i < 6; i++) {
+                const column = new THREE.Mesh(columnGeometry, columnMaterial);
+                column.position.set(-6 + i * 2.4, 3, -51);
+                column.castShadow = true;
+                column.receiveShadow = true;
+                this.scene.add(column);
+            }
+            
+            // Back columns
+            for (let i = 0; i < 6; i++) {
+                const column = new THREE.Mesh(columnGeometry, columnMaterial);
+                column.position.set(-6 + i * 2.4, 3, -59);
+                column.castShadow = true;
+                column.receiveShadow = true;
+                this.scene.add(column);
+            }
+            
+            // Temple roof
+            const roofGeometry = new THREE.BoxGeometry(16, 1, 12);
+            const roofMaterial = new THREE.MeshStandardMaterial({ color: 0xc2b280 });
+            const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+            roof.position.set(0, 6, -55);
+            roof.castShadow = true;
+            roof.receiveShadow = true;
+            this.scene.add(roof);
+            
+            // Temple pediment
+            const pedimentGeometry = new THREE.CylinderGeometry(0.1, 0.1, 16, 3, 1, false, 0, Math.PI);
+            pedimentGeometry.rotateZ(Math.PI / 2);
+            pedimentGeometry.rotateY(Math.PI / 2);
+            const pedimentMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
+            const pediment = new THREE.Mesh(pedimentGeometry, pedimentMaterial);
+            pediment.position.set(0, 7.5, -50);
+            pediment.scale.set(1, 1.5, 1);
+            pediment.castShadow = true;
+            pediment.receiveShadow = true;
+            this.scene.add(pediment);
+            
+            // Add a glow light to the temple
+            const templeLight = new THREE.PointLight(0xffffcc, 1, 50);
+            templeLight.position.set(0, 10, -55);
+            this.scene.add(templeLight);
+            
+            // Add temple portal trigger
+            this.interactiveObjects.push({
+                type: 'temple-entrance',
+                position: new THREE.Vector3(0, 1, -49),
+                radius: 3,
+                interact: () => this.enterTemple()
+            });
+        }
+        
+        // Create decorative elements
+        createDecorativeElements() {
+            // Add some cypress trees
+            const treePositions = [
+                [-8, 0, 0], [-10, 0, -10], [-8, 0, -20], [-10, 0, -30], [-8, 0, -40],
+                [8, 0, 0], [10, 0, -10], [8, 0, -20], [10, 0, -30], [8, 0, -40]
+            ];
+            
+            treePositions.forEach(pos => {
+                this.createCypressTree(pos[0], pos[1], pos[2]);
+            });
+            
+            // Add some decorative stones
+            const stonePositions = [
+                [-5, 0.25, 0], [6, 0.25, -8], [-4, 0.25, -15], [4, 0.25, -25], [-3, 0.25, -35]
+            ];
+            
+            stonePositions.forEach(pos => {
+                this.createDecorativeStone(pos[0], pos[1], pos[2]);
+            });
+            
+            // Create relief carvings along the path
+            this.createReliefCarvings();
+        }
+        
+        // Create cypress tree
+        createCypressTree(x, y, z) {
+            // Tree trunk
+            const trunkGeometry = new THREE.CylinderGeometry(0.3, 0.4, 2, 8);
+            const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x6d4c41 });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.set(x, y + 1, z);
+            trunk.castShadow = true;
+            trunk.receiveShadow = true;
+            this.scene.add(trunk);
+            
+            // Tree foliage (cone shaped)
+            const foliageGeometry = new THREE.ConeGeometry(1, 5, 8);
+            const foliageMaterial = new THREE.MeshStandardMaterial({ color: 0x2e7d32 });
+            const foliage = new THREE.Mesh(foliageGeometry, foliageMaterial);
+            foliage.position.set(x, y + 4, z);
+            foliage.castShadow = true;
+            this.scene.add(foliage);
+        }
+        
+        // Create decorative stone
+        createDecorativeStone(x, y, z) {
+            const stoneGeometry = new THREE.SphereGeometry(0.5, 6, 4);
+            stoneGeometry.scale(1, 0.6, 1);
+            const stoneMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xaaaaaa,
+                roughness: 0.9,
+                metalness: 0.1
+            });
+            const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
+            stone.position.set(x, y, z);
+            stone.rotation.y = Math.random() * Math.PI * 2;
+            stone.castShadow = true;
+            stone.receiveShadow = true;
+            this.scene.add(stone);
+        }
+        
+        // Create relief carvings along the path
+        createReliefCarvings() {
+            // Create stone slabs with carved reliefs
+            const reliefPositions = [
+                { pos: [-6, 0, -7], rot: Math.PI / 2 },
+                { pos: [6, 0, -15], rot: -Math.PI / 2 },
+                { pos: [-6, 0, -30], rot: Math.PI / 2 }
+            ];
+            
+            reliefPositions.forEach(item => {
+                const slabGeometry = new THREE.BoxGeometry(0.5, 1.5, 2);
+                const slabMaterial = new THREE.MeshStandardMaterial({ color: 0xd1d1d1 });
+                const slab = new THREE.Mesh(slabGeometry, slabMaterial);
+                slab.position.set(item.pos[0], item.pos[1] + 0.75, item.pos[2]);
+                slab.rotation.y = item.rot;
+                slab.castShadow = true;
+                slab.receiveShadow = true;
+                this.scene.add(slab);
+                
+                // Add relief carving texture
+                // In a full implementation, we would use textured materials here
+                const reliefGeometry = new THREE.PlaneGeometry(1.9, 1.4);
+                const reliefMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xe0e0e0,
+                    roughness: 0.7,
+                    metalness: 0.1
+                });
+                const relief = new THREE.Mesh(reliefGeometry, reliefMaterial);
+                relief.position.set(item.pos[0] + (item.rot === Math.PI / 2 ? 0.26 : -0.26), item.pos[1] + 0.75, item.pos[2]);
+                relief.rotation.y = item.rot;
+                this.scene.add(relief);
+            });
+        }
+        
+        // Create info markers for interactive points
+        createInfoMarkers() {
+            this.infoPoints.forEach((point, index) => {
+                // Add to interactive objects
+                this.interactiveObjects.push({
+                    type: 'info',
+                    id: index,
+                    position: point.position,
+                    radius: 2,
+                    interact: () => this.showInfo(index)
+                });
+                
+                // Add visual marker
+                this.createVisualMarker(point.position, index);
+                
+                // Add light to highlight the marker
+                const markerLight = new THREE.PointLight(0xffffaa, 1, 5);
+                markerLight.position.set(
+                    point.position.x,
+                    point.position.y + 1,
+                    point.position.z
+                );
+                this.scene.add(markerLight);
+            });
+        }
+        
+        // Create a visual marker in the 3D world
+        createVisualMarker(position, index) {
+            // Create a container for the marker
+            const markerContainer = document.createElement('div');
+            markerContainer.className = 'marker-container';
+            document.body.appendChild(markerContainer);
+            
+            // Create the marker
+            const marker = document.createElement('div');
+            marker.className = 'info-marker';
+            marker.textContent = 'i';
+            marker.addEventListener('click', () => {
+                if (this.playerCanMove && !this.inDialog) {
+                    // Calculate distance to player
+                    const distance = this.player.position.distanceTo(position);
+                    if (distance <= 5) {
+                        this.showInfo(index);
+                    }
+                }
+            });
+            
+            markerContainer.appendChild(marker);
+            
+            // Store marker and its 3D position for updating
+            this.interactiveObjects.find(obj => obj.type === 'info' && obj.id === index).marker = {
+                element: markerContainer,
+                position3D: position
+            };
+        }
+        
+        // Update marker positions on screen
+        updateMarkers() {
+            this.interactiveObjects.forEach(obj => {
+                if (obj.type === 'info' && obj.marker) {
+                    // Convert 3D position to screen coordinates
+                    const position = obj.marker.position3D.clone();
+                    position.project(this.camera);
+                    
+                    // Convert to CSS coordinates
+                    const x = (position.x * 0.5 + 0.5) * window.innerWidth;
+                    const y = (-position.y * 0.5 + 0.5) * window.innerHeight;
+                    
+                    // Update marker position
+                    obj.marker.element.style.left = x + 'px';
+                    obj.marker.element.style.top = y + 'px';
+                    
+                    // Hide if behind camera or too far away
+                    const distance = this.player.position.distanceTo(obj.position);
+                    const isBehindCamera = position.z > 1;
+                    obj.marker.element.style.display = (isBehindCamera || distance > 15) ? 'none' : 'block';
+                }
+            });
+        }
+        
+        // Show information dialog for a specific info point
+        showInfo(index) {
+            if (this.inDialog) return;
+            
+            const info = this.infoPoints[index];
+            if (!info) return;
+            
+            this.inDialog = true;
+            this.playerCanMove = false;
+            this.currentInfoSet = info;
+            this.currentDialogIndex = 0;
+            
+            // Set dialog title
+            this.dialogText.innerHTML = `<h3>${info.title}</h3>${info.texts[0]}`;
+            
+            // Show dialog box
+            this.dialogBox.style.display = 'block';
+        }
+        
+        // Continue to next dialog message
+        continueDialog() {
+            if (this.currentInfoSet) {
+                // Continue info texts
+                this.currentDialogIndex++;
+                
+                if (this.currentDialogIndex >= this.currentInfoSet.texts.length) {
+                    this.closeDialog();
+                } else {
+                    this.dialogText.innerHTML = `<h3>${this.currentInfoSet.title}</h3>${this.currentInfoSet.texts[this.currentDialogIndex]}`;
+                }
+            } else {
+                // Continue introduction dialog
+                this.currentDialogIndex++;
+                
+                if (this.currentDialogIndex >= this.dialogSequences.introduction.length) {
+                    this.closeDialog();
+                } else {
+                    this.dialogText.textContent = this.dialogSequences.introduction[this.currentDialogIndex];
+                }
+            }
+        }
+        
+        // Close dialog
+        closeDialog() {
+            this.inDialog = false;
+            this.dialogBox.style.display = 'none';
+            this.playerCanMove = true;
+            this.currentInfoSet = null;
+        }
+        
+        // Start the cutscene
+        startCutscene() {
+            this.setupCutscene([
+                {
+                    subtitle: "You approach the Sacred Path leading to the Temple of Apollo...",
+                    cameraPosition: new THREE.Vector3(0, 3, 15),
+                    cameraLookAt: new THREE.Vector3(0, 2, -25),
+                    duration: 4000
+                },
+                {
+                    cameraPosition: new THREE.Vector3(10, 5, -5),
+                    cameraLookAt: new THREE.Vector3(0, 2, -25),
+                    subtitle: "As you walk, you notice ancient markers inscribed with knowledge about Greek musical traditions.",
+                    duration: 5000
+                },
+                {
+                    cameraPosition: new THREE.Vector3(-5, 2, -5),
+                    cameraLookAt: new THREE.Vector3(0, 2, -40),
+                    subtitle: "The temple of Apollo awaits at the end of your journey...",
+                    duration: 4000
+                }
+            ]);
+        }
+        
+        // Set up cutscene sequence
+        setupCutscene(steps) {
+            this.cutsceneSteps = steps;
+            this.currentCutsceneStep = 0;
+            this.inCutscene = true;
+            this.playerCanMove = false;
+            
+            // Start the first step of cutscene
+            if (this.cutsceneSteps.length > 0) {
+                this.executeCutsceneStep();
+            }
+        }
+        
+        // Execute current cutscene step
+        executeCutsceneStep() {
+            if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
+                this.finishCutscene();
+                return;
+            }
+            
+            const step = this.cutsceneSteps[this.currentCutsceneStep];
+            
+            // Handle camera movement
+            if (step.cameraPosition) {
+                this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
+            }
+            
+            // Handle subtitle
+            if (step.subtitle) {
+                this.showSubtitle(step.subtitle, step.duration || 2000);
+            }
+            
+            // Wait for the step duration and then move to next step
+            setTimeout(() => {
+                this.currentCutsceneStep++;
+                this.executeCutsceneStep();
+            }, step.duration || 2000);
+        }
+        
+        // Finish cutscene and show introduction dialog
+        finishCutscene() {
+            this.inCutscene = false;
+            this.hideSubtitle();
+            
+            // Start introduction dialog
+            setTimeout(() => {
+                this.inDialog = true;
+                this.dialogText.textContent = this.dialogSequences.introduction[0];
+                this.dialogBox.style.display = 'block';
+            }, 1000);
+        }
+        
+        // Enter the temple
+        enterTemple() {
+            if (!this.transitioningToTemple) {
+                this.transitioningToTemple = true;
+                
+                this.showSubtitle("You approach the entrance to the Temple of Apollo...");
+                
+                setTimeout(() => {
+                    this.fadeOut(() => {
+                        window.location.href = 'temple-entrance.html';
+                    });
+                }, 3000);
+            }
+        }
+        
+        // Set camera to player perspective
+        setPlayerCamera() {
+            
+                camera.lookAt(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z - 10
+                );
+            }
+        // Update player movement based on input
+        updatePlayerMovement() {
+            const playerSpeed = this.moveSpeed;
+            
+            // Calculate forward/backward movement
+            if (this.moveForward) {
+                this.player.position.z -= playerSpeed;
+            }
+            if (this.moveBackward) {
+                this.player.position.z += playerSpeed;
+            }
+            
+            // Calculate left/right movement
+            if (this.moveLeft) {
+                this.player.position.x -= playerSpeed;
+            }
+            if (this.moveRight) {
+                this.player.position.x += playerSpeed;
+            }
+            
+            // Update camera position to follow player
+            this.camera.position.set(
+                this.player.position.x,
+                this.player.position.y + 0.5,
+                this.player.position.z + 2
+            );
+            
+            // Keep camera looking forward
+            this.camera.lookAt(
+                this.player.position.x,
+                this.player.position.y + 0.5,
+                this.player.position.z - 10
+            );
+            
+            // Check if player reached temple entrance
+            if (this.player.position.z < -45) {
+                this.enterTemple();
+            }
+            
+            // Update marker positions
+            this.updateMarkers();
+        }
+        
+        // Handle keydown events
+        onKeyDown(event) {
+            switch (event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    this.moveForward = true;
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    this.moveBackward = true;
+                    break;
+                    
+                case 'KeyA':
+                case 'ArrowLeft':
+                    this.moveLeft = true;
+                    break;
+                    
+                case 'KeyD':
+                case 'ArrowRight':
+                    this.moveRight = true;
+                    break;
+                    
+                case 'KeyE':
+                    this.interact();
+                    break;
+                    
+                case 'Space':
+                    // Skip cutscene if in one
+                    if (this.inCutscene) {
+                        this.endCutscene();
+                    }
+                    // Skip dialog if in one
+                    else if (this.inDialog) {
+                        this.continueDialog();
+                    }
+                    break;
+            }
+        }
+        
+        // Handle keyup events
+        onKeyUp(event) {
+            switch (event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    this.moveForward = false;
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    this.moveBackward = false;
+                    break;
+                    
+                case 'KeyA':
+                case 'ArrowLeft':
+                    this.moveLeft = false;
+                    break;
+                    
+                case 'KeyD':
+                case 'ArrowRight':
+                    this.moveRight = false;
+                    break;
+            }
+        }
+        
+        // Handle player interaction
+        interact() {
+            if (this.inCutscene || this.inDialog) return;
+            
+            let closestObj = null;
+            let closestDistance = Infinity;
+            
+            for (const obj of this.interactiveObjects) {
+                const distance = this.player.position.distanceTo(obj.position);
+                
+                if (distance <= obj.radius && distance < closestDistance) {
+                    closestDistance = distance;
+                    closestObj = obj;
+                }
+            }
+            
+            if (closestObj && typeof closestObj.interact === 'function') {
+                closestObj.interact();
+            }
+        }
+        
+        // Fade in from black
+        fadeIn() {
+            this.fadeOverlay.style.opacity = '0';
+        }
+        
+        // Fade out to black
+        fadeOut(callback) {
+            this.fadeOverlay.style.opacity = '1';
+            
+            setTimeout(() => {
+                if (callback) callback();
+            }, 2000);
+        }
+        
+        // Show subtitle text
+        showSubtitle(text, duration) {
+            this.subtitle.textContent = text;
+            this.subtitle.style.opacity = '1';
+            
+            if (duration) {
+                setTimeout(() => {
+                    this.hideSubtitle();
+                }, duration);
+            }
+        }
+        
+        // Hide subtitle
+        hideSubtitle() {
+            this.subtitle.style.opacity = '0';
+        }
+        
+        // Show interaction prompt
+        showInteractionPrompt(text) {
+            this.interactionPrompt.textContent = text;
+            this.interactionPrompt.style.opacity = '1';
+            
+            setTimeout(() => {
+                this.interactionPrompt.style.opacity = '0';
+            }, 5000);
+        }
+        
+        // Animation loop
+        animate() {
+            requestAnimationFrame(this.animate);
+            
+            // Handle player movement if enabled
+            if (this.playerCanMove) {
+                this.updatePlayerMovement();
+            }
+            
+            this.renderer.render(this.scene, this.camera);
+        }
+        
+        // Handle window resize
+        onWindowResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+    }
+    
+    // Initialize the scene manager
+    let sceneManager = new SceneManager();
+</script>
+</body>
+</html>
