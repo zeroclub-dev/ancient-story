@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Greek Musical Odyssey - Temple Entrance</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+        }
+    /* Fade transition */
+    #fade-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 1;
+        z-index: 100;
+        transition: opacity 2s ease;
+        pointer-events: none;
+    }
+    
+    /* Subtitle styling */
+    #subtitle {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 18px;
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 1s ease;
+        text-align: center;
+        max-width: 80%;
+    }
+    
+    /* Dialog box */
+    #dialog-box {
+        position: absolute;
+        bottom: 15%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 2px solid #f5deb3;
+        border-radius: 5px;
+        padding: 20px;
+        color: white;
+        z-index: 95;
+        display: none;
+    }
+    
+    #dialog-name {
+        color: #f5deb3;
+        font-size: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    
+    #dialog-text {
+        font-size: 18px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+    
+    #dialog-continue {
+        color: #f5deb3;
+        text-align: right;
+        font-style: italic;
+        cursor: pointer;
+    }
+    
+    /* Interaction prompt */
+    #interaction-prompt {
+        position: absolute;
+        bottom: 5%;
+        right: 5%;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 14px;
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+</style>
+</head>
+<body>
+    <div id="fade-overlay"></div>
+    <div id="subtitle"></div>
+    <div id="interaction-prompt"></div>
+<div id="dialog-box">
+    <div id="dialog-name">Temple Guardian</div>
+    <div id="dialog-text">Welcome to the Temple of Apollo, traveler. I see you have come to learn about the instruments that once filled these sacred halls with divine melodies.</div>
+    <div id="dialog-continue">Click to continue...</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+    // Scene Manager Class
+    class SceneManager {
+        constructor() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.renderer = new THREE.WebGLRenderer({ antialias: true });
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setClearColor(0x87CEEB); // Sky blue background
+            this.renderer.shadowMap.enabled = true;
+            document.body.appendChild(this.renderer.domElement);
+            
+            // State tracking
+            this.inCutscene = true;
+            this.inDialog = false;
+            this.playerCanMove = false;
+            this.cutsceneSteps = [];
+            this.currentCutsceneStep = 0;
+            this.currentDialogIndex = 0;
+            
+            // Dialog sequences
+            this.dialogSequences = {
+                templeGuardian: [
+                    {
+                        name: "Temple Guardian",
+                        text: "Welcome to the Temple of Apollo, traveler. I see you have come to learn about the instruments that once filled these sacred halls with divine melodies."
+                    },
+                    {
+                        name: "Temple Guardian",
+                        text: "In ancient Greece, music was not merely entertainment, but a sacred art that connected mortals to the gods. Apollo himself was the patron deity of music and the lyre."
+                    },
+                    {
+                        name: "Temple Guardian",
+                        text: "Inside this temple, you will discover the instruments of our ancestors - the lyre of Apollo, the aulos pipes of Dionysus, the drums and cymbals of Cybele, and many more."
+                    },
+                    {
+                        name: "Temple Guardian",
+                        text: "Are you ready to begin your journey through the musical history of ancient Greece? Approach the portal ahead when you are prepared to enter the sacred chamber of instruments."
+                    }
+                ]
+            };
+            
+            // Player
+            this.player = null;
+            this.playerHeight = 1.7;
+            this.playerVelocity = new THREE.Vector3();
+            this.playerDirection = new THREE.Vector3();
+            this.moveForward = false;
+            this.moveBackward = false;
+            this.moveLeft = false;
+            this.moveRight = false;
+            this.moveSpeed = 0.1;
+            
+            // Interactive objects
+            this.interactiveObjects = [];
+            
+            // DOM Elements
+            this.fadeOverlay = document.getElementById('fade-overlay');
+            this.subtitle = document.getElementById('subtitle');
+            this.interactionPrompt = document.getElementById('interaction-prompt');
+            this.dialogBox = document.getElementById('dialog-box');
+            this.dialogName = document.getElementById('dialog-name');
+            this.dialogText = document.getElementById('dialog-text');
+            this.dialogContinue = document.getElementById('dialog-continue');
+            
+            // Bind methods
+            this.animate = this.animate.bind(this);
+            this.onWindowResize = this.onWindowResize.bind(this);
+            this.continueDialog = this.continueDialog.bind(this);
+            
+            // Setup event listeners
+            window.addEventListener('resize', this.onWindowResize);
+            document.addEventListener('keydown', this.onKeyDown.bind(this));
+            document.addEventListener('keyup', this.onKeyUp.bind(this));
+            this.dialogContinue.addEventListener('click', this.continueDialog);
+            
+            // Initialize scene
+            this.initScene();
+            
+            // Start animation loop
+            this.animate();
+            
+            // Start fade in and cutscene
+            setTimeout(() => {
+                this.fadeIn();
+                this.startCutscene();
+            }, 500);
+        }
+        
+        // Initialize the scene
+        initScene() {
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            this.scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(-10, 20, 10);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.camera.near = 0.1;
+            directionalLight.shadow.camera.far = 100;
+            directionalLight.shadow.camera.left = -20;
+            directionalLight.shadow.camera.right = 20;
+            directionalLight.shadow.camera.top = 20;
+            directionalLight.shadow.camera.bottom = -20;
+            this.scene.add(directionalLight);
+            
+            // Create temple floor
+            const floorGeometry = new THREE.PlaneGeometry(50, 50);
+            const floorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xf5f5dc,  // Beige marble-like color
+                roughness: 0.5,
+                metalness: 0.2
+            });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+            floor.position.y = 0;
+            floor.receiveShadow = true;
+            this.scene.add(floor);
+            
+            // Create player
+            const playerGeometry = new THREE.BoxGeometry(0.5, this.playerHeight, 0.5);
+            const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+            this.player = new THREE.Mesh(playerGeometry, playerMaterial);
+            this.player.position.set(0, this.playerHeight / 2, 18);
+            this.player.castShadow = true;
+            this.player.visible = false; // Hide player mesh initially
+            this.scene.add(this.player);
+            
+            // Create temple interior
+            this.createTempleInterior();
+            
+            // Create temple guardian NPC
+            this.createTempleGuardian();
+            
+            // Create portal to instrument chamber
+            this.createInstrumentPortal();
+            
+            // Set initial camera position for cutscene
+            this.camera.position.set(0, 5, 25);
+            this.camera.lookAt(0, 2, 0);
+        }
+        
+        // Create temple interior
+        createTempleInterior() {
+            // Create columns
+            const columnGeometry = new THREE.CylinderGeometry(1, 1, 10, 20);
+            const columnMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
+            
+            // Create columns along both sides
+            for (let i = 0; i < 8; i++) {
+                // Left columns
+                const leftColumn = new THREE.Mesh(columnGeometry, columnMaterial);
+                leftColumn.position.set(-10, 5, 15 - i * 5);
+                leftColumn.castShadow = true;
+                leftColumn.receiveShadow = true;
+                this.scene.add(leftColumn);
+                
+                // Right columns
+                const rightColumn = new THREE.Mesh(columnGeometry, columnMaterial);
+                rightColumn.position.set(10, 5, 15 - i * 5);
+                rightColumn.castShadow = true;
+                rightColumn.receiveShadow = true;
+                this.scene.add(rightColumn);
+            }
+            
+            // Create walls
+            const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
+            
+            // Back wall
+            const backWallGeometry = new THREE.BoxGeometry(25, 12, 1);
+            const backWall = new THREE.Mesh(backWallGeometry, wallMaterial);
+            backWall.position.set(0, 6, -20);
+            backWall.castShadow = true;
+            backWall.receiveShadow = true;
+            this.scene.add(backWall);
+            
+            // Create ceiling
+            const ceilingGeometry = new THREE.BoxGeometry(25, 1, 45);
+            const ceiling = new THREE.Mesh(ceilingGeometry, wallMaterial);
+            ceiling.position.set(0, 12, 0);
+            ceiling.receiveShadow = true;
+            this.scene.add(ceiling);
+            
+            // Create some decorative elements
+            this.createDecorativeElements();
+        }
+        
+        // Create decorative elements
+        createDecorativeElements() {
+            // Create statue of Apollo
+            const statueBaseGeometry = new THREE.CylinderGeometry(2, 2, 1, 32);
+            const statueMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
+            const statueBase = new THREE.Mesh(statueBaseGeometry, statueMaterial);
+            statueBase.position.set(0, 0.5, -15);
+            statueBase.castShadow = true;
+            statueBase.receiveShadow = true;
+            this.scene.add(statueBase);
+            
+            // Apollo body
+            const bodyGeometry = new THREE.CylinderGeometry(0.8, 0.6, 4, 16);
+            const body = new THREE.Mesh(bodyGeometry, statueMaterial);
+            body.position.set(0, 3, -15);
+            body.castShadow = true;
+            this.scene.add(body);
+            
+            // Apollo head
+            const headGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+            const head = new THREE.Mesh(headGeometry, statueMaterial);
+            head.position.set(0, 5.5, -15);
+            head.castShadow = true;
+            this.scene.add(head);
+            
+            // Apollo arms
+            const armGeometry = new THREE.CylinderGeometry(0.2, 0.2, 2.5, 8);
+            
+            // Left arm
+            const leftArm = new THREE.Mesh(armGeometry, statueMaterial);
+            leftArm.position.set(-1, 3.5, -15);
+            leftArm.rotation.z = Math.PI / 3;
+            leftArm.castShadow = true;
+            this.scene.add(leftArm);
+            
+            // Right arm (holding lyre)
+            const rightArm = new THREE.Mesh(armGeometry, statueMaterial);
+            rightArm.position.set(1, 3.5, -15);
+            rightArm.rotation.z = -Math.PI / 3;
+            rightArm.castShadow = true;
+            this.scene.add(rightArm);
+            
+            // Create decorative vases
+            const vaseGeometry = new THREE.CylinderGeometry(0.5, 0.3, 1.5, 16);
+            const vaseMaterial = new THREE.MeshStandardMaterial({ color: 0xff4500 });
+            
+            for (let i = 0; i < 6; i++) {
+                const vase = new THREE.Mesh(vaseGeometry, vaseMaterial);
+                vase.position.set(-8 + i * 3, 0.75, -18);
+                vase.castShadow = true;
+                vase.receiveShadow = true;
+                this.scene.add(vase);
+            }
+            
+            // Add lighting effects
+            const statueLight = new THREE.PointLight(0xffffbb, 1, 10);
+            statueLight.position.set(0, 6, -15);
+            this.scene.add(statueLight);
+        }
+        
+        // Create temple guardian NPC
+        createTempleGuardian() {
+            const npcGroup = new THREE.Group();
+            
+            // Body
+            const bodyGeometry = new THREE.CylinderGeometry(0.5, 0.4, 1.7, 16);
+            const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xeeccaa });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.position.y = 0.85;
+            npcGroup.add(body);
+            
+            // Head
+            const headGeometry = new THREE.SphereGeometry(0.4, 32, 32);
+            const head = new THREE.Mesh(headGeometry, bodyMaterial);
+            head.position.y = 1.9;
+            npcGroup.add(head);
+            
+            // Robe
+            const robeGeometry = new THREE.CylinderGeometry(0.6, 0.8, 1.6, 16);
+            const robeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+            const robe = new THREE.Mesh(robeGeometry, robeMaterial);
+            robe.position.y = 0.8;
+            npcGroup.add(robe);
+            
+            npcGroup.position.set(5, 0, 10);
+            npcGroup.castShadow = true;
+            npcGroup.receiveShadow = true;
+            this.scene.add(npcGroup);
+            
+            // Add as interactive object
+            this.interactiveObjects.push({
+                type: 'npc',
+                object: npcGroup,
+                position: new THREE.Vector3(5, 0, 10),
+                radius: 3,
+                interact: () => this.startDialog('templeGuardian')
+            });
+            
+            // Add NPC light
+            const npcLight = new THREE.PointLight(0xffffcc, 0.7, 5);
+            npcLight.position.set(5, 2, 10);
+            this.scene.add(npcLight);
+        }
+        
+        // Create portal to instrument chamber
+        createInstrumentPortal() {
+            const portalGroup = new THREE.Group();
+            
+            // Create portal base
+            const baseGeometry = new THREE.CylinderGeometry(2, 2.2, 0.3, 32);
+            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0xd4af37 });
+            const base = new THREE.Mesh(baseGeometry, baseMaterial);
+            base.position.y = 0.15;
+            portalGroup.add(base);
+            
+            // Create portal ring
+            const ringGeometry = new THREE.TorusGeometry(1.8, 0.3, 16, 32);
+            const ringMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xd4af37,
+                emissive: 0xffcc77,
+                emissiveIntensity: 0.3
+            });
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.rotation.x = Math.PI / 2;
+            ring.position.y = 2;
+            portalGroup.add(ring);
+            
+            // Create portal energy effect
+            const portalGeometry = new THREE.CircleGeometry(1.5, 32);
+            const portalMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xffffbb,
+                transparent: true,
+                opacity: 0.7
+            });
+            const portal = new THREE.Mesh(portalGeometry, portalMaterial);
+            portal.rotation.x = -Math.PI / 2;
+            portal.position.y = 2;
+            portalGroup.add(portal);
+            
+            portalGroup.position.set(0, 0, -10);
+            this.scene.add(portalGroup);
+            
+            // Add portal light
+            const portalLight = new THREE.PointLight(0xffffcc, 1, 15);
+            portalLight.position.set(0, 2, -10);
+            this.scene.add(portalLight);
+            
+            // Add as interactive object
+            this.interactiveObjects.push({
+                type: 'portal',
+                object: portalGroup,
+                position: new THREE.Vector3(0, 0, -10),
+                radius: 3,
+                interact: () => this.enterInstrumentChamber()
+            });
+        }
+        
+        // Start the cutscene
+        startCutscene() {
+            this.setupCutscene([
+                {
+                    subtitle: "You enter the majestic Temple of Apollo...",
+                    cameraPosition: new THREE.Vector3(0, 5, 20),
+                    cameraLookAt: new THREE.Vector3(0, 2, -10),
+                    duration: 4000
+                },
+                {
+                    cameraPosition: new THREE.Vector3(10, 3, 5),
+                    cameraLookAt: new THREE.Vector3(0, 2, -15),
+                    subtitle: "The air is filled with an ethereal silence, as if the very stones remember the music that once echoed here.",
+                    duration: 5000
+                },
+                {
+                    cameraPosition: new THREE.Vector3(-5, 2, 8),
+                    cameraLookAt: new THREE.Vector3(5, 1.5, 10),
+                    subtitle: "A temple guardian approaches...",
+                    duration: 4000
+                }
+            ]);
+        }
+        
+        // Set up cutscene sequence
+        setupCutscene(steps) {
+            this.cutsceneSteps = steps;
+            this.currentCutsceneStep = 0;
+            this.inCutscene = true;
+            this.playerCanMove = false;
+            
+            // Start the first step of cutscene
+            if (this.cutsceneSteps.length > 0) {
+                this.executeCutsceneStep();
+            }
+        }
+        
+        // Execute current cutscene step
+        executeCutsceneStep() {
+            if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
+                this.finishCutscene();
+                return;
+            }
+            
+            const step = this.cutsceneSteps[this.currentCutsceneStep];
+            
+            // Handle camera movement
+            if (step.cameraPosition) {
+                this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
+            }
+            
+            // Handle subtitle
+            if (step.subtitle) {
+                this.showSubtitle(step.subtitle, step.duration || 2000);
+            }
+            
+            // Wait for the step duration and then move to next step
+            setTimeout(() => {
+                this.currentCutsceneStep++;
+                this.executeCutsceneStep();
+            }, step.duration || 2000);
+        }
+        
+        // Finish cutscene and start dialog
+        finishCutscene() {
+            this.inCutscene = false;
+            this.hideSubtitle();
+            
+            // Start dialog with temple guardian
+            setTimeout(() => {
+                this.startDialog('templeGuardian');
+            }, 1000);
+        }
+        
+        // Start dialog sequence
+        startDialog(dialogKey) {
+            if (this.inDialog) return;
+            
+            this.inDialog = true;
+            this.playerCanMove = false;
+            this.currentDialogIndex = 0;
+            
+            // Show first dialog message
+            this.showDialogMessage(dialogKey, this.currentDialogIndex);
+            
+            // Show dialog box
+            this.dialogBox.style.display = 'block';
+        }
+        
+        // Show dialog message
+        showDialogMessage(dialogKey, index) {
+            const dialogSequence = this.dialogSequences[dialogKey];
+            if (!dialogSequence || index >= dialogSequence.length) {
+                this.endDialog();
+                return;
+            }
+            
+            const dialog = dialogSequence[index];
+            this.dialogName.textContent = dialog.name;
+            this.dialogText.textContent = dialog.text;
+        }
+        
+        // Continue to next dialog message
+        continueDialog() {
+            // Find which dialog sequence we're in
+            let dialogKey = null;
+            for (const key in this.dialogSequences) {
+                if (this.dialogName.textContent === this.dialogSequences[key][this.currentDialogIndex].name) {
+                    dialogKey = key;
+                    break;
+                }
+            }
+            
+            if (!dialogKey) {
+                this.endDialog();
+                return;
+            }
+            
+            this.currentDialogIndex++;
+            
+            if (this.currentDialogIndex >= this.dialogSequences[dialogKey].length) {
+                this.endDialog();
+            } else {
+                this.showDialogMessage(dialogKey, this.currentDialogIndex);
+            }
+        }
+        
+        // End dialog
+        endDialog() {
+            this.inDialog = false;
+            this.dialogBox.style.display = 'none';
+            this.playerCanMove = true;
+            
+            // Set player camera
+            this.setPlayerCamera();
+            
+            // Show interaction prompt
+            this.showInteractionPrompt("Use WASD to move. Press E to interact with the portal");
+        }
+        
+        // Move camera to a position over time
+        moveCameraTo(position, lookAt, duration) {
+            const startPosition = this.camera.position.clone();
+            const startTime = Date.now();
+            
+            const animate = () => {
+                const now = Date.now();
+                const progress = Math.min((now - startTime) / duration, 1);
+                
+                // Interpolate camera position
+                this.camera.position.lerpVectors(startPosition, position, progress);
+                
+                // Look at target
+                if (lookAt) {
+                    this.camera.lookAt(lookAt);
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            animate();
+        }
+        
+        // Set camera to player perspective
+        setPlayerCamera() {
+            this.camera.position.set(
+                this.player.position.x,
+                this.player.position.y + 0.5,
+                this.player.position.z + 2
+            );
+            this.camera.lookAt(
+                this.player.position.x,
+                this.player.position.y + 0.5,
+                this.player.position.z - 10
+            );
+        }
+        
+        // Fade in from black
+        fadeIn() {
+            this.fadeOverlay.style.opacity = '0';
+        }
+        
+        // Fade out to black
+        fadeOut(callback) {
+            this.fadeOverlay.style.opacity = '1';
+            
+            setTimeout(() => {
+                if (callback) callback();
+            }, 2000);
+        }
+        
+        // Show subtitle text
+        showSubtitle(text, duration) {
+            this.subtitle.textContent = text;
+            this.subtitle.style.opacity = '1';
+            
+            if (duration) {
+                setTimeout(() => {
+                    this.hideSubtitle();
+                }, duration);
+            }
+        }
+        
+        // Hide subtitle
+        hideSubtitle() {
+            this.subtitle.style.opacity = '0';
+        }
+        
+        // Show interaction prompt
+        showInteractionPrompt(text) {
+            this.interactionPrompt.textContent = text;
+            this.interactionPrompt.style.opacity = '1';
+            
+            setTimeout(() => {
+                this.interactionPrompt.style.opacity = '0';
+            }, 5000);
+        }
+        
+        // Animation loop
+        animate() {
+            requestAnimationFrame(this.animate);
+            
+            // Handle player movement if enabled
+            if (this.playerCanMove) {
+                this.updatePlayerMovement();
+                this.checkInteractions();
+            }
+            
+            // Animate portal effect
+            this.animatePortal();
+            
+            this.renderer.render(this.scene, this.camera);
+        }
+        
+        // Animate portal effect
+        animatePortal() {
+            // Find portal object
+            const portalObject = this.interactiveObjects.find(obj => obj.type === 'portal');
+            if (!portalObject || !portalObject.object) return;
+            
+            // Find portal energy effect (the circle mesh)
+            portalObject.object.children.forEach(child => {
+                if (child.geometry && child.geometry.type === 'CircleGeometry') {
+                    // Pulse opacity
+                    const time = Date.now() * 0.001;
+                    child.material.opacity = 0.5 + 0.3 * Math.sin(time * 2);
+                    
+                    // Rotate slowly
+                    child.rotation.z = time % (Math.PI * 2);
+                }
+            });
+        }
+        // Update player movement based on input
+updatePlayerMovement() {
+    const playerSpeed = this.moveSpeed;
+    
+    // Calculate forward/backward movement
+    if (this.moveForward) {
+        this.player.position.z -= playerSpeed;
+    }
+    if (this.moveBackward) {
+        this.player.position.z += playerSpeed;
+    }
+    
+    // Calculate left/right movement
+    if (this.moveLeft) {
+        this.player.position.x -= playerSpeed;
+    }
+    if (this.moveRight) {
+        this.player.position.x += playerSpeed;
+    }
+    
+    // Update camera position to follow player
+    this.camera.position.set(
+        this.player.position.x,
+        this.player.position.y + 0.5,
+        this.player.position.z + 2
+    );
+    
+    // Keep camera looking ahead
+    this.camera.lookAt(
+        this.player.position.x,
+        this.player.position.y + 0.5,
+        this.player.position.z - 10
+    );
+    
+    // Limit player movement within temple
+    this.player.position.x = Math.max(-11, Math.min(11, this.player.position.x));
+    this.player.position.z = Math.max(-19, Math.min(19, this.player.position.z));
+}
+        
+        // Check for interactions with objects
+        checkInteractions() {
+            for (const obj of this.interactiveObjects) {
+                const distance = this.player.position.distanceTo(obj.position);
+                
+                if (distance <= obj.radius) {
+                    // Show interaction prompt
+                    this.showInteractionPrompt(`Press E to interact with ${obj.type === 'npc' ? 'Temple Guardian' : 'Portal'}`);
+                    break;
+                }
+            }
+        }
+        
+        // Interact with nearest object
+        interact() {
+            if (this.inDialog || this.inCutscene) return;
+            
+            let closestObj = null;
+            let closestDistance = Infinity;
+            
+            for (const obj of this.interactiveObjects) {
+                const distance = this.player.position.distanceTo(obj.position);
+                
+                if (distance <= obj.radius && distance < closestDistance) {
+                    closestDistance = distance;
+                    closestObj = obj;
+                }
+            }
+            
+            if (closestObj && closestObj.interact) {
+                closestObj.interact();
+            }
+        }
+        
+        // Enter the instrument chamber
+        enterInstrumentChamber() {
+            if (!this.transitioningToNextScene) {
+                this.transitioningToNextScene = true;
+                
+                this.showSubtitle("Entering the Chamber of Ancient Instruments...");
+                
+                setTimeout(() => {
+                    this.fadeOut(() => {
+                        window.location.href = 'instrument-chamber.html';
+                    });
+                }, 3000);
+            }
+        }
+        
+        // Handle window resize
+        onWindowResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Handle keydown events
+        onKeyDown(event) {
+            switch (event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    this.moveForward = true;
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    this.moveBackward = true;
+                    break;
+                    
+                case 'KeyA':
+                case 'ArrowLeft':
+                    this.moveLeft = true;
+                    break;
+                    
+                case 'KeyD':
+                case 'ArrowRight':
+                    this.moveRight = true;
+                    break;
+                    
+                case 'KeyE':
+                    this.interact();
+                    break;
+                    
+                case 'Space':
+                    // Skip dialog if in one
+                    if (this.inDialog) {
+                        this.continueDialog();
+                    }
+                    // Skip cutscene if in one
+                    else if (this.inCutscene) {
+                        this.finishCutscene();
+                    }
+                    break;
+            }
+        }
+        
+        // Handle keyup events
+        onKeyUp(event) {
+            switch (event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    this.moveForward = false;
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    this.moveBackward = false;
+                    break;
+                    
+                case 'KeyA':
+                case 'ArrowLeft':
+                    this.moveLeft = false;
+                    break;
+                    
+                case 'KeyD':
+                case 'ArrowRight':
+                    this.moveRight = false;
+                    break;
+            }
+        }
+    }
+    
+    // Initialize the scene manager
+    let sceneManager = new SceneManager();
+</script>
+</body>
+</html>
