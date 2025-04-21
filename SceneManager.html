@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scene Template</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Georgia', serif;
+        }
+    /* Fade transition */
+    #fade-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 1;
+        z-index: 100;
+        transition: opacity 2s ease;
+        pointer-events: none;
+    }
+    
+    /* Subtitle styling */
+    #subtitle {
+        position: absolute;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 18px;
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 1s ease;
+        text-align: center;
+        max-width: 80%;
+    }
+    
+    /* Interaction prompt */
+    #interaction-prompt {
+        position: absolute;
+        bottom: 5%;
+        right: 5%;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 14px;
+        z-index: 90;
+        opacity: 0;
+        transition: opacity 1s ease;
+    }
+</style>
+</head>
+<body>
+    <div id="fade-overlay"></div>
+    <div id="subtitle"></div>
+    <div id="interaction-prompt"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+
+    
+    // Scene Manager Class
+    class SceneManager {
+        constructor() {
+            this.scene = new THREE.Scene();
+            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.renderer = new THREE.WebGLRenderer({ antialias: true });
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setClearColor(0x000000);
+            document.body.appendChild(this.renderer.domElement);
+            
+            // State tracking
+            this.inCutscene = true;
+            this.playerCanMove = false;
+            this.cutsceneSteps = [];
+            this.currentCutsceneStep = 0;
+            
+            // Player
+            this.playerVelocity = new THREE.Vector3();
+            this.playerDirection = new THREE.Vector3();
+            this.moveForward = false;
+            this.moveBackward = false;
+            this.moveLeft = false;
+            this.moveRight = false;
+
+            this.yaw = 0; // Horizontal camera rotation
+            this.pitch = 0; // Vertical camera rotation
+            this.mouseSensitivity = 0.002;
+            this.isPointerLocked = false;
+            
+            // DOM Elements
+            this.fadeOverlay = document.getElementById('fade-overlay');
+            this.subtitle = document.getElementById('subtitle');
+            this.interactionPrompt = document.getElementById('interaction-prompt');
+            
+            // Bind methods
+            this.animate = this.animate.bind(this);
+            this.onWindowResize = this.onWindowResize.bind(this);
+            
+            // Setup event listeners
+            window.addEventListener('resize', this.onWindowResize);
+            document.addEventListener('keydown', this.onKeyDown.bind(this));
+            document.addEventListener('keyup', this.onKeyUp.bind(this));
+            
+
+            // Start animation loop
+            this.animate();
+            
+            // Start fade in
+            setTimeout(() => {
+                this.fadeIn();
+            }, 500);
+        }
+        
+        // Initialize the scene (to be implemented by specific scenes)
+        initScene() {
+            // Override in specific scene implementations
+            console.log('Base initScene called - override this method');
+        }
+        
+        // Set up cutscene sequence
+        setupCutscene(steps) {
+            this.cutsceneSteps = steps;
+            this.currentCutsceneStep = 0;
+            this.inCutscene = true;
+            this.playerCanMove = false;
+            
+            // Start the first step of cutscene
+            if (this.cutsceneSteps.length > 0) {
+                this.executeCutsceneStep();
+            }
+        }
+        
+        // Execute current cutscene step
+        executeCutsceneStep() {
+            if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
+                this.endCutscene();
+                return;
+            }
+            
+            const step = this.cutsceneSteps[this.currentCutsceneStep];
+            
+            // Handle camera movement
+            if (step.cameraPosition) {
+                this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
+            }
+            
+            // Handle subtitle
+            if (step.subtitle) {
+                this.showSubtitle(step.subtitle, step.duration || 2000);
+            }
+            
+            // Wait for the step duration and then move to next step
+            setTimeout(() => {
+                this.currentCutsceneStep++;
+                this.executeCutsceneStep();
+            }, step.duration || 2000);
+        }
+        
+        // End cutscene and allow player movement
+        endCutscene() {
+            this.inCutscene = false;
+            this.playerCanMove = true;
+            this.hideSubtitle();
+            this.showInteractionPrompt("Use WASD to move");
+            
+            // Set camera to player perspective
+            this.setPlayerCamera();
+        }
+        
+        // Set camera to player view
+        setPlayerCamera() {
+            // Override in specific scene implementations
+            console.log('Set player camera - override this method');
+        }
+        
+        // Move camera to a position over time
+        moveCameraTo(position, lookAt, duration) {
+            const startPosition = this.camera.position.clone();
+            const startTime = Date.now();
+            
+            const animate = () => {
+                const now = Date.now();
+                const progress = Math.min((now - startTime) / duration, 1);
+                
+                // Interpolate camera position
+                this.camera.position.lerpVectors(startPosition, position, progress);
+                
+                // Look at target
+                if (lookAt) {
+                    this.camera.lookAt(lookAt);
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            animate();
+        }
+        
+        // Fade in from black
+        fadeIn() {
+            this.fadeOverlay.style.opacity = '0';
+        }
+        
+        // Fade out to black
+        fadeOut(callback) {
+            this.fadeOverlay.style.opacity = '1';
+            
+            setTimeout(() => {
+                if (callback) callback();
+            }, 2000);
+        }
+        
+        // Show subtitle text
+        showSubtitle(text, duration) {
+            this.subtitle.textContent = text;
+            this.subtitle.style.opacity = '1';
+            
+            if (duration) {
+                setTimeout(() => {
+                    this.hideSubtitle();
+                }, duration);
+            }
+        }
+        
+        // Hide subtitle
+        hideSubtitle() {
+            this.subtitle.style.opacity = '0';
+        }
+        
+        // Show interaction prompt
+        showInteractionPrompt(text) {
+            this.interactionPrompt.textContent = text;
+            this.interactionPrompt.style.opacity = '1';
+            
+            setTimeout(() => {
+                this.interactionPrompt.style.opacity = '0';
+            }, 5000);
+        }
+        
+        // Animation loop
+        animate() {
+            requestAnimationFrame(this.animate);
+            
+            // Handle player movement if enabled
+            if (this.playerCanMove) {
+                this.updatePlayerMovement();
+            }
+            
+            this.renderer.render(this.scene, this.camera);
+        }
+        
+        // Update player movement based on input
+        updatePlayerMovement() {
+            // Override in specific scene implementations
+            console.log('Update player movement - override this method');
+        }
+        
+        // Handle window resize
+        onWindowResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Handle keydown events
+        onKeyDown(event) {
+            switch (event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    this.moveForward = true;
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    this.moveBackward = true;
+                    break;
+                    
+                case 'KeyA':
+                case 'ArrowLeft':
+                    this.moveLeft = true;
+                    break;
+                    
+                case 'KeyD':
+                case 'ArrowRight':
+                    this.moveRight = true;
+                    break;
+                    
+                case 'KeyE':
+                    this.interact();
+                    break;
+                    
+                case 'Space':
+                    // Skip cutscene if in one
+                    if (this.inCutscene) {
+                        this.endCutscene();
+                    }
+                    break;
+            }
+        }
+        
+        // Handle keyup events
+        onKeyUp(event) {
+            switch (event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    this.moveForward = false;
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    this.moveBackward = false;
+                    break;
+                    
+                case 'KeyA':
+                case 'ArrowLeft':
+                    this.moveLeft = false;
+                    break;
+                    
+                case 'KeyD':
+                case 'ArrowRight':
+                    this.moveRight = false;
+                    break;
+            }
+        }
+        
+        // Handle player interaction
+        interact() {
+            // Override in specific scene implementations
+            console.log('Interact - override this method');
+        }
+        
+        // Navigate to a new scene
+        navigateToScene(sceneUrl) {
+            this.fadeOut(() => {
+                window.location.href = sceneUrl;
+            });
+        }
+    }
+    
+    // Initialize the scene manager (to be called in specific scenes)
+    // let sceneManager = new SceneManager();
+</script>
+</body>
+</html>
