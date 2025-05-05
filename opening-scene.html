@@ -10,615 +10,639 @@
             overflow: hidden;
             font-family: 'Georgia', serif;
         }
-    /* Fade transition */
-    #fade-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        opacity: 1;
-        z-index: 100;
-        transition: opacity 2s ease;
-        pointer-events: none;
-    }
-    
-    /* Subtitle styling */
-    #subtitle {
-        position: absolute;
-        bottom: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 18px;
-        z-index: 90;
-        opacity: 0;
-        transition: opacity 1s ease;
-        text-align: center;
-        max-width: 80%;
-    }
-    
-    /* Interaction prompt */
-    #interaction-prompt {
-        position: absolute;
-        bottom: 5%;
-        right: 5%;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 8px 16px;
-        border-radius: 5px;
-        font-size: 14px;
-        z-index: 90;
-        opacity: 0;
-        transition: opacity 1s ease;
-    }
-    
-    /* Title screen */
-    #title-screen {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 95;
-        opacity: 0;
-        transition: opacity 2s ease;
-    }
-    
-    #title {
-        color: #f5deb3;
-        font-size: 48px;
-        margin-bottom: 20px;
-        text-align: center;
-        font-family: 'Georgia', serif;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
-    
-    #subtitle-text {
-        color: white;
-        font-size: 24px;
-        margin-bottom: 40px;
-        text-align: center;
-    }
-    
-    #start-button {
-        background-color: #8b5a2b;
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        font-size: 18px;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-    
-    #start-button:hover {
-        background-color: #a67c52;
-    }
-</style>
+        /* Fade transition */
+        #fade-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 1;
+            z-index: 100;
+            transition: opacity 2s ease;
+            pointer-events: none;
+        }
+        
+        /* Subtitle styling */
+        #subtitle {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 1s ease;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        /* Interaction prompt */
+        #interaction-prompt {
+            position: absolute;
+            bottom: 5%;
+            right: 5%;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        /* Title screen */
+        #title-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 95;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+        
+        #title {
+            color: #f5deb3;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        #subtitle-text {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        #button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        #start-button, #credits-button {
+            background-color: #8b5a2b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            width: 200px;
+            text-align: center;
+        }
+        
+        #start-button:hover, #credits-button:hover {
+            background-color: #a67c52;
+        }
+    </style>
 </head>
 <body>
     <div id="fade-overlay"></div>
     <div id="subtitle"></div>
     <div id="interaction-prompt"></div>
-<div id="title-screen">
-    <h1 id="title">ECHOES OF ANCIENT GREECE</h1>
-    <p id="subtitle-text">A Journey Through Ancient Musical Instruments</p>
-    <button id="start-button">Begin Your Odyssey</button>
-</div>
+    <div id="title-screen">
+        <h1 id="title">ECHOES OF ANCIENT GREECE</h1>
+        <p id="subtitle-text">A Journey Through Ancient Musical Instruments</p>
+        <div id="button-container">
+            <button id="start-button">Begin Your Odyssey</button>
+            <button id="credits-button">Works Cited</button>
+        </div>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<script>
-    // Scene Manager Class
-    class SceneManager {
-        constructor() {
-            this.scene = new THREE.Scene();
-            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            this.renderer = new THREE.WebGLRenderer({ antialias: true });
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-            this.renderer.setClearColor(0x87CEEB); // Sky blue background
-            this.renderer.shadowMap.enabled = true;
-            document.body.appendChild(this.renderer.domElement);
-            
-            // State tracking
-            this.inCutscene = true;
-            this.playerCanMove = false;
-            this.cutsceneSteps = [];
-            this.currentCutsceneStep = 0;
-            
-            // Player
-            this.player = null;
-            this.playerHeight = 1.7;
-            this.playerVelocity = new THREE.Vector3();
-            this.playerDirection = new THREE.Vector3();
-            this.moveForward = false;
-            this.moveBackward = false;
-            this.moveLeft = false;
-            this.moveRight = false;
-            this.moveSpeed = 0.1;
-            
-            // DOM Elements
-            this.fadeOverlay = document.getElementById('fade-overlay');
-            this.subtitle = document.getElementById('subtitle');
-            this.interactionPrompt = document.getElementById('interaction-prompt');
-            this.titleScreen = document.getElementById('title-screen');
-            this.startButton = document.getElementById('start-button');
-            
-            // Bind methods
-            this.animate = this.animate.bind(this);
-            this.onWindowResize = this.onWindowResize.bind(this);
-            
-            // Setup event listeners
-            window.addEventListener('resize', this.onWindowResize);
-            document.addEventListener('keydown', this.onKeyDown.bind(this));
-            document.addEventListener('keyup', this.onKeyUp.bind(this));
-            this.startButton.addEventListener('click', this.startExperience.bind(this));
-            
-            // Initialize scene
-            this.initScene();
-            
-            // Start animation loop
-            this.animate();
-            
-            // Fade in the title screen after initial black screen fade
-            setTimeout(() => {
-                this.fadeIn();
+    <script>
+        // Scene Manager Class
+        class SceneManager {
+            constructor() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer({ antialias: true });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setClearColor(0x87CEEB); // Sky blue background
+                this.renderer.shadowMap.enabled = true;
+                document.body.appendChild(this.renderer.domElement);
+                
+                // State tracking
+                this.inCutscene = true;
+                this.playerCanMove = false;
+                this.cutsceneSteps = [];
+                this.currentCutsceneStep = 0;
+                
+                // Player
+                this.player = null;
+                this.playerHeight = 1.7;
+                this.playerVelocity = new THREE.Vector3();
+                this.playerDirection = new THREE.Vector3();
+                this.moveForward = false;
+                this.moveBackward = false;
+                this.moveLeft = false;
+                this.moveRight = false;
+                this.moveSpeed = 0.1;
+                
+                // DOM Elements
+                this.fadeOverlay = document.getElementById('fade-overlay');
+                this.subtitle = document.getElementById('subtitle');
+                this.interactionPrompt = document.getElementById('interaction-prompt');
+                this.titleScreen = document.getElementById('title-screen');
+                this.startButton = document.getElementById('start-button');
+                this.creditsButton = document.getElementById('credits-button');
+                
+                // Bind methods
+                this.animate = this.animate.bind(this);
+                this.onWindowResize = this.onWindowResize.bind(this);
+                
+                // Setup event listeners
+                window.addEventListener('resize', this.onWindowResize);
+                document.addEventListener('keydown', this.onKeyDown.bind(this));
+                document.addEventListener('keyup', this.onKeyUp.bind(this));
+                this.startButton.addEventListener('click', this.startExperience.bind(this));
+                
+                // Initialize scene
+                this.initScene();
+                
+                // Start animation loop
+                this.animate();
+                
+                // Fade in the title screen after initial black screen fade
                 setTimeout(() => {
-                    this.titleScreen.style.opacity = '1';
-                }, 1000);
-            }, 500);
-        }
-        
-        // Initialize the scene
-        initScene() {
-            // Add lights
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-            this.scene.add(ambientLight);
+                    this.fadeIn();
+                    setTimeout(() => {
+                        this.titleScreen.style.opacity = '1';
+                    }, 1000);
+                }, 500);
+                
+                // Dispatch event that scene manager is initialized
+                const event = new CustomEvent('sceneManagerInitialized', { detail: { sceneManager: this } });
+                window.dispatchEvent(event);
+                
+                // Make sceneManager globally available
+                window.sceneManager = this;
+            }
             
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(10, 20, 10);
-            directionalLight.castShadow = true;
-            directionalLight.shadow.camera.near = 0.1;
-            directionalLight.shadow.camera.far = 100;
-            directionalLight.shadow.camera.left = -20;
-            directionalLight.shadow.camera.right = 20;
-            directionalLight.shadow.camera.top = 20;
-            directionalLight.shadow.camera.bottom = -20;
-            this.scene.add(directionalLight);
-            
-            // Create ground
-            const groundGeometry = new THREE.PlaneGeometry(100, 100);
-            const groundMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xdcd0ab,  // Sandy color
-                roughness: 0.8,
-                metalness: 0.1
-            });
-            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-            ground.rotation.x = -Math.PI / 2; // Rotate to be horizontal
-            ground.position.y = -0.5;
-            ground.receiveShadow = true;
-            this.scene.add(ground);
-            
-            // Create player
-            const playerGeometry = new THREE.BoxGeometry(0.5, this.playerHeight, 0.5);
-            const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
-            this.player = new THREE.Mesh(playerGeometry, playerMaterial);
-            this.player.position.set(0, this.playerHeight / 2, 5);
-            this.player.castShadow = true;
-            this.player.visible = false; // Hide player mesh initially
-            this.scene.add(this.player);
+            // Initialize the scene
+            initScene() {
+                // Add lights
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                this.scene.add(ambientLight);
+                
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(10, 20, 10);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.camera.near = 0.1;
+                directionalLight.shadow.camera.far = 100;
+                directionalLight.shadow.camera.left = -20;
+                directionalLight.shadow.camera.right = 20;
+                directionalLight.shadow.camera.top = 20;
+                directionalLight.shadow.camera.bottom = -20;
+                this.scene.add(directionalLight);
+                
+                // Create ground
+                const groundGeometry = new THREE.PlaneGeometry(100, 100);
+                const groundMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xdcd0ab,  // Sandy color
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+                ground.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+                ground.position.y = -0.5;
+                ground.receiveShadow = true;
+                this.scene.add(ground);
+                
+                // Create player
+                const playerGeometry = new THREE.BoxGeometry(0.5, this.playerHeight, 0.5);
+                const playerMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+                this.player = new THREE.Mesh(playerGeometry, playerMaterial);
+                this.player.position.set(0, this.playerHeight / 2, 5);
+                this.player.castShadow = true;
+                this.player.visible = false; // Hide player mesh initially
+                this.scene.add(this.player);
+                
+                // Create temple in the distance
+                this.createTemple();
+                
+                // Create some Greek columns around the scene
+                this.createColumns();
+                
+                // Set initial camera position for cutscene
+                this.camera.position.set(0, 10, 30);
+                this.camera.lookAt(0, 0, 0);
+            }
             
             // Create temple in the distance
-            this.createTemple();
-            
-            // Create some Greek columns around the scene
-            this.createColumns();
-            
-            // Set initial camera position for cutscene
-            this.camera.position.set(0, 10, 30);
-            this.camera.lookAt(0, 0, 0);
-        }
-        
-        // Create temple in the distance
-        createTemple() {
-            // Temple base
-            const baseGeometry = new THREE.BoxGeometry(15, 1, 10);
-            const baseMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
-            const base = new THREE.Mesh(baseGeometry, baseMaterial);
-            base.position.set(0, 0, -30);
-            base.castShadow = true;
-            base.receiveShadow = true;
-            this.scene.add(base);
-            
-            // Temple columns
-            const columnGeometry = new THREE.CylinderGeometry(0.5, 0.5, 5, 16);
-            const columnMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
-            
-            // Front columns
-            for (let i = 0; i < 6; i++) {
-                const column = new THREE.Mesh(columnGeometry, columnMaterial);
-                column.position.set(-6 + i * 2.4, 3, -26);
-                column.castShadow = true;
-                column.receiveShadow = true;
-                this.scene.add(column);
-            }
-            
-            // Back columns
-            for (let i = 0; i < 6; i++) {
-                const column = new THREE.Mesh(columnGeometry, columnMaterial);
-                column.position.set(-6 + i * 2.4, 3, -34);
-                column.castShadow = true;
-                column.receiveShadow = true;
-                this.scene.add(column);
-            }
-            
-            // Temple roof
-            const roofGeometry = new THREE.BoxGeometry(16, 1, 12);
-            const roofMaterial = new THREE.MeshStandardMaterial({ color: 0xc2b280 });
-            const roof = new THREE.Mesh(roofGeometry, roofMaterial);
-            roof.position.set(0, 6, -30);
-            roof.castShadow = true;
-            roof.receiveShadow = true;
-            this.scene.add(roof);
-            
-            // Temple pediment
-            const pedimentGeometry = new THREE.CylinderGeometry(0.1, 0.1, 16, 3, 1, false, 0, Math.PI);
-            pedimentGeometry.rotateZ(Math.PI / 2);
-            pedimentGeometry.rotateY(Math.PI / 2);
-            const pedimentMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
-            const pediment = new THREE.Mesh(pedimentGeometry, pedimentMaterial);
-            pediment.position.set(0, 7.5, -25);
-            pediment.scale.set(1, 1.5, 1);
-            pediment.castShadow = true;
-            pediment.receiveShadow = true;
-            this.scene.add(pediment);
-            
-            // Add a glow light to the temple
-            const templeLight = new THREE.PointLight(0xffffcc, 1, 50);
-            templeLight.position.set(0, 10, -30);
-            this.scene.add(templeLight);
-        }
-        
-        // Create decorative columns
-        createColumns() {
-            const columnGeometry = new THREE.CylinderGeometry(0.5, 0.5, 5, 16);
-            const columnMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
-            const columnTopGeometry = new THREE.BoxGeometry(1.2, 0.3, 1.2);
-            
-            // Create columns along the path to the temple
-            for (let i = 0; i < 5; i++) {
-                // Left column
-                const leftColumn = new THREE.Mesh(columnGeometry, columnMaterial);
-                leftColumn.position.set(-5, 2.5, 0 - i * 6);
-                leftColumn.castShadow = true;
-                leftColumn.receiveShadow = true;
-                this.scene.add(leftColumn);
+            createTemple() {
+                // Temple base
+                const baseGeometry = new THREE.BoxGeometry(15, 1, 10);
+                const baseMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
+                const base = new THREE.Mesh(baseGeometry, baseMaterial);
+                base.position.set(0, 0, -30);
+                base.castShadow = true;
+                base.receiveShadow = true;
+                this.scene.add(base);
                 
-                // Left column top
-                const leftColumnTop = new THREE.Mesh(columnTopGeometry, columnMaterial);
-                leftColumnTop.position.set(-5, 5.2, 0 - i * 6);
-                leftColumnTop.castShadow = true;
-                this.scene.add(leftColumnTop);
+                // Temple columns
+                const columnGeometry = new THREE.CylinderGeometry(0.5, 0.5, 5, 16);
+                const columnMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
                 
-                // Right column
-                const rightColumn = new THREE.Mesh(columnGeometry, columnMaterial);
-                rightColumn.position.set(5, 2.5, 0 - i * 6);
-                rightColumn.castShadow = true;
-                rightColumn.receiveShadow = true;
-                this.scene.add(rightColumn);
-                
-                // Right column top
-                const rightColumnTop = new THREE.Mesh(columnTopGeometry, columnMaterial);
-                rightColumnTop.position.set(5, 5.2, 0 - i * 6);
-                rightColumnTop.castShadow = true;
-                this.scene.add(rightColumnTop);
-            }
-        }
-        
-        // Start the experience
-        startExperience() {
-            // Hide title screen
-            this.titleScreen.style.opacity = '0';
-            setTimeout(() => {
-                this.titleScreen.style.display = 'none';
-                
-                // Start cutscene
-                this.setupCutscene([
-                    {
-                        cameraPosition: new THREE.Vector3(20, 10, 20),
-                        cameraLookAt: new THREE.Vector3(0, 0, -10),
-                        subtitle: "In ancient Greece, music was not just entertainment, but a connection to the divine.",
-                        duration: 5000
-                    },
-                    {
-                        cameraPosition: new THREE.Vector3(-15, 5, -5),
-                        cameraLookAt: new THREE.Vector3(0, 0, -30),
-                        subtitle: "Your journey will take you to the Temple of Apollo, patron god of music and the arts.",
-                        duration: 5000
-                    },
-                    {
-                        cameraPosition: new THREE.Vector3(0, 2, 10),
-                        cameraLookAt: new THREE.Vector3(0, 2, -30),
-                        subtitle: "There, you will discover the instruments that once filled the air with melodies honoring the gods.",
-                        duration: 5000
-                    }
-                ]);
-            }, 1000);
-        }
-        
-        // Set up cutscene sequence
-        setupCutscene(steps) {
-            this.cutsceneSteps = steps;
-            this.currentCutsceneStep = 0;
-            this.inCutscene = true;
-            this.playerCanMove = false;
-            
-            // Start the first step of cutscene
-            if (this.cutsceneSteps.length > 0) {
-                this.executeCutsceneStep();
-            }
-        }
-        
-        // Execute current cutscene step
-        executeCutsceneStep() {
-            if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
-                this.endCutscene();
-                return;
-            }
-            
-            const step = this.cutsceneSteps[this.currentCutsceneStep];
-            
-            // Handle camera movement
-            if (step.cameraPosition) {
-                this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
-            }
-            
-            // Handle subtitle
-            if (step.subtitle) {
-                this.showSubtitle(step.subtitle, step.duration || 2000);
-            }
-            
-            // Wait for the step duration and then move to next step
-            setTimeout(() => {
-                this.currentCutsceneStep++;
-                this.executeCutsceneStep();
-            }, step.duration || 2000);
-        }
-        
-        // End cutscene and allow player movement
-        endCutscene() {
-            this.inCutscene = false;
-            this.playerCanMove = true;
-            this.hideSubtitle();
-            this.showInteractionPrompt("Use WASD to move toward the temple");
-            
-            // Set camera to player perspective
-            this.setPlayerCamera();
-        }
-        
-        // Set camera to player view
-        setPlayerCamera() {
-            this.camera.position.set(
-                this.player.position.x,
-                this.player.position.y + 0.5,
-                this.player.position.z + 2
-            );
-            this.camera.lookAt(
-                this.player.position.x,
-                this.player.position.y + 0.5,
-                this.player.position.z - 10
-            );
-        }
-        
-        // Move camera to a position over time
-        moveCameraTo(position, lookAt, duration) {
-            const startPosition = this.camera.position.clone();
-            const startTime = Date.now();
-            
-            const animate = () => {
-                const now = Date.now();
-                const progress = Math.min((now - startTime) / duration, 1);
-                
-                // Interpolate camera position
-                this.camera.position.lerpVectors(startPosition, position, progress);
-                
-                // Look at target
-                if (lookAt) {
-                    this.camera.lookAt(lookAt);
+                // Front columns
+                for (let i = 0; i < 6; i++) {
+                    const column = new THREE.Mesh(columnGeometry, columnMaterial);
+                    column.position.set(-6 + i * 2.4, 3, -26);
+                    column.castShadow = true;
+                    column.receiveShadow = true;
+                    this.scene.add(column);
                 }
                 
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
+                // Back columns
+                for (let i = 0; i < 6; i++) {
+                    const column = new THREE.Mesh(columnGeometry, columnMaterial);
+                    column.position.set(-6 + i * 2.4, 3, -34);
+                    column.castShadow = true;
+                    column.receiveShadow = true;
+                    this.scene.add(column);
                 }
-            };
+                
+                // Temple roof
+                const roofGeometry = new THREE.BoxGeometry(16, 1, 12);
+                const roofMaterial = new THREE.MeshStandardMaterial({ color: 0xc2b280 });
+                const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+                roof.position.set(0, 6, -30);
+                roof.castShadow = true;
+                roof.receiveShadow = true;
+                this.scene.add(roof);
+                
+                // Temple pediment
+                const pedimentGeometry = new THREE.CylinderGeometry(0.1, 0.1, 16, 3, 1, false, 0, Math.PI);
+                pedimentGeometry.rotateZ(Math.PI / 2);
+                pedimentGeometry.rotateY(Math.PI / 2);
+                const pedimentMaterial = new THREE.MeshStandardMaterial({ color: 0xf5f5dc });
+                const pediment = new THREE.Mesh(pedimentGeometry, pedimentMaterial);
+                pediment.position.set(0, 7.5, -25);
+                pediment.scale.set(1, 1.5, 1);
+                pediment.castShadow = true;
+                pediment.receiveShadow = true;
+                this.scene.add(pediment);
+                
+                // Add a glow light to the temple
+                const templeLight = new THREE.PointLight(0xffffcc, 1, 50);
+                templeLight.position.set(0, 10, -30);
+                this.scene.add(templeLight);
+            }
             
-            animate();
-        }
-        
-        // Fade in from black
-        fadeIn() {
-            this.fadeOverlay.style.opacity = '0';
-        }
-        
-        // Fade out to black
-        fadeOut(callback) {
-            this.fadeOverlay.style.opacity = '1';
+            // Create decorative columns
+            createColumns() {
+                const columnGeometry = new THREE.CylinderGeometry(0.5, 0.5, 5, 16);
+                const columnMaterial = new THREE.MeshStandardMaterial({ color: 0xfffafa });
+                const columnTopGeometry = new THREE.BoxGeometry(1.2, 0.3, 1.2);
+                
+                // Create columns along the path to the temple
+                for (let i = 0; i < 5; i++) {
+                    // Left column
+                    const leftColumn = new THREE.Mesh(columnGeometry, columnMaterial);
+                    leftColumn.position.set(-5, 2.5, 0 - i * 6);
+                    leftColumn.castShadow = true;
+                    leftColumn.receiveShadow = true;
+                    this.scene.add(leftColumn);
+                    
+                    // Left column top
+                    const leftColumnTop = new THREE.Mesh(columnTopGeometry, columnMaterial);
+                    leftColumnTop.position.set(-5, 5.2, 0 - i * 6);
+                    leftColumnTop.castShadow = true;
+                    this.scene.add(leftColumnTop);
+                    
+                    // Right column
+                    const rightColumn = new THREE.Mesh(columnGeometry, columnMaterial);
+                    rightColumn.position.set(5, 2.5, 0 - i * 6);
+                    rightColumn.castShadow = true;
+                    rightColumn.receiveShadow = true;
+                    this.scene.add(rightColumn);
+                    
+                    // Right column top
+                    const rightColumnTop = new THREE.Mesh(columnTopGeometry, columnMaterial);
+                    rightColumnTop.position.set(5, 5.2, 0 - i * 6);
+                    rightColumnTop.castShadow = true;
+                    this.scene.add(rightColumnTop);
+                }
+            }
             
-            setTimeout(() => {
-                if (callback) callback();
-            }, 2000);
-        }
-        
-        // Show subtitle text
-        showSubtitle(text, duration) {
-            this.subtitle.textContent = text;
-            this.subtitle.style.opacity = '1';
-            
-            if (duration) {
+            // Start the experience
+            startExperience() {
+                // Hide title screen
+                this.titleScreen.style.opacity = '0';
                 setTimeout(() => {
-                    this.hideSubtitle();
-                }, duration);
+                    this.titleScreen.style.display = 'none';
+                    
+                    // Start cutscene
+                    this.setupCutscene([
+                        {
+                            cameraPosition: new THREE.Vector3(20, 10, 20),
+                            cameraLookAt: new THREE.Vector3(0, 0, -10),
+                            subtitle: "In ancient Greece, music was not just entertainment, but a connection to the divine.",
+                            duration: 5000
+                        },
+                        {
+                            cameraPosition: new THREE.Vector3(-15, 5, -5),
+                            cameraLookAt: new THREE.Vector3(0, 0, -30),
+                            subtitle: "Your journey will take you to the Temple of Apollo, patron god of music and the arts.",
+                            duration: 5000
+                        },
+                        {
+                            cameraPosition: new THREE.Vector3(0, 2, 10),
+                            cameraLookAt: new THREE.Vector3(0, 2, -30),
+                            subtitle: "There, you will discover the instruments that once filled the air with melodies honoring the gods.",
+                            duration: 5000
+                        }
+                    ]);
+                }, 1000);
             }
-        }
-        
-        // Hide subtitle
-        hideSubtitle() {
-            this.subtitle.style.opacity = '0';
-        }
-        
-        // Show interaction prompt
-        showInteractionPrompt(text) {
-            this.interactionPrompt.textContent = text;
-            this.interactionPrompt.style.opacity = '1';
             
-            setTimeout(() => {
-                this.interactionPrompt.style.opacity = '0';
-            }, 5000);
-        }
-        
-        // Animation loop
-        animate() {
-            requestAnimationFrame(this.animate);
-            
-            // Handle player movement if enabled
-            if (this.playerCanMove) {
-                this.updatePlayerMovement();
+            // Set up cutscene sequence
+            setupCutscene(steps) {
+                this.cutsceneSteps = steps;
+                this.currentCutsceneStep = 0;
+                this.inCutscene = true;
+                this.playerCanMove = false;
                 
-                // Check if player reached the temple
-                if (this.player.position.z < -20) {
-                    this.navigateToTempleScene();
+                // Start the first step of cutscene
+                if (this.cutsceneSteps.length > 0) {
+                    this.executeCutsceneStep();
                 }
             }
             
-            this.renderer.render(this.scene, this.camera);
-        }
-        
-        // Update player movement based on input
-        updatePlayerMovement() {
-            const playerSpeed = this.moveSpeed;
-            
-            // Calculate forward/backward movement
-            if (this.moveForward) {
-                this.player.position.z -= playerSpeed;
+            // Execute current cutscene step
+            executeCutsceneStep() {
+                if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
+                    this.endCutscene();
+                    return;
+                }
+                
+                const step = this.cutsceneSteps[this.currentCutsceneStep];
+                
+                // Handle camera movement
+                if (step.cameraPosition) {
+                    this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
+                }
+                
+                // Handle subtitle
+                if (step.subtitle) {
+                    this.showSubtitle(step.subtitle, step.duration || 2000);
+                }
+                
+                // Wait for the step duration and then move to next step
+                setTimeout(() => {
+                    this.currentCutsceneStep++;
+                    this.executeCutsceneStep();
+                }, step.duration || 2000);
             }
-            if (this.moveBackward) {
-                this.player.position.z += playerSpeed;
+            
+            // End cutscene and allow player movement
+            endCutscene() {
+                this.inCutscene = false;
+                this.playerCanMove = true;
+                this.hideSubtitle();
+                this.showInteractionPrompt("Use WASD to move toward the temple");
+                
+                // Set camera to player perspective
+                this.setPlayerCamera();
             }
             
-            // Calculate left/right movement
-            if (this.moveLeft) {
-                this.player.position.x -= playerSpeed;
+            // Set camera to player view
+            setPlayerCamera() {
+                this.camera.position.set(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z + 2
+                );
+                this.camera.lookAt(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z - 10
+                );
+            }
+            
+            // Move camera to a position over time
+            moveCameraTo(position, lookAt, duration) {
+                const startPosition = this.camera.position.clone();
+                const startTime = Date.now();
+                
+                const animate = () => {
+                    const now = Date.now();
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    
+                    // Interpolate camera position
+                    this.camera.position.lerpVectors(startPosition, position, progress);
+                    
+                    // Look at target
+                    if (lookAt) {
+                        this.camera.lookAt(lookAt);
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+                
+                animate();
+            }
+            
+            // Fade in from black
+            fadeIn() {
+                this.fadeOverlay.style.opacity = '0';
+            }
+            
+            // Fade out to black
+            fadeOut(callback) {
+                this.fadeOverlay.style.opacity = '1';
+                
+                setTimeout(() => {
+                    if (callback) callback();
+                }, 2000);
+            }
+            
+            // Show subtitle text
+            showSubtitle(text, duration) {
+                this.subtitle.textContent = text;
+                this.subtitle.style.opacity = '1';
+                
+                if (duration) {
+                    setTimeout(() => {
+                        this.hideSubtitle();
+                    }, duration);
+                }
+            }
+            
+            // Hide subtitle
+            hideSubtitle() {
+                this.subtitle.style.opacity = '0';
+            }
+            
+            // Show interaction prompt
+            showInteractionPrompt(text) {
+                this.interactionPrompt.textContent = text;
+                this.interactionPrompt.style.opacity = '1';
+                
+                setTimeout(() => {
+                    this.interactionPrompt.style.opacity = '0';
+                }, 5000);
+            }
+            
+            // Animation loop
+            animate() {
+                requestAnimationFrame(this.animate);
+                
+                // Handle player movement if enabled
+                if (this.playerCanMove) {
+                    this.updatePlayerMovement();
+                    
+                    // Check if player reached the temple
+                    if (this.player.position.z < -20) {
+                        this.navigateToTempleScene();
+                    }
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+            
+            // Update player movement based on input
+            updatePlayerMovement() {
+                const playerSpeed = this.moveSpeed;
+                
+                // Calculate forward/backward movement
+                if (this.moveForward) {
+                    this.player.position.z -= playerSpeed;
+                }
+                if (this.moveBackward) {
+                    this.player.position.z += playerSpeed;
+                }
+                
+                // Calculate left/right movement
+                if (this.moveLeft) {
+                    this.player.position.x -= playerSpeed;
                 }
                 if (this.moveRight) {
                     this.player.position.x += playerSpeed;
                 }
-            // Update camera position to follow player
-            this.camera.position.set(
-                this.player.position.x,
-                this.player.position.y + 0.5,
-                this.player.position.z + 2
-            );
+                
+                // Update camera position to follow player
+                this.camera.position.set(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z + 2
+                );
+                
+                // Keep camera looking toward the temple
+                this.camera.lookAt(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z - 10
+                );
+            }
             
-            // Keep camera looking toward the temple
-            this.camera.lookAt(
-                this.player.position.x,
-                this.player.position.y + 0.5,
-                this.player.position.z - 10
-            );
-        }
-        
-        // Handle window resize
-        onWindowResize() {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
-            this.camera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-        
-        // Handle keydown events
-        onKeyDown(event) {
-            switch (event.code) {
-                case 'KeyW':
-                case 'ArrowUp':
-                    this.moveForward = true;
-                    break;
+            // Handle window resize
+            onWindowResize() {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            
+            // Handle keydown events
+            onKeyDown(event) {
+                switch (event.code) {
+                    case 'KeyW':
+                    case 'ArrowUp':
+                        this.moveForward = true;
+                        break;
+                        
+                    case 'KeyS':
+                    case 'ArrowDown':
+                        this.moveBackward = true;
+                        break;
+                        
+                    case 'KeyA':
+                    case 'ArrowLeft':
+                        this.moveLeft = true;
+                        break;
+                        
+                    case 'KeyD':
+                    case 'ArrowRight':
+                        this.moveRight = true;
+                        break;
+                        
+                    case 'Space':
+                        // Skip cutscene if in one
+                        if (this.inCutscene) {
+                            this.endCutscene();
+                        }
+                        break;
+                }
+            }
+            
+            // Handle keyup events
+            onKeyUp(event) {
+                switch (event.code) {
+                    case 'KeyW':
+                    case 'ArrowUp':
+                        this.moveForward = false;
+                        break;
+                        
+                    case 'KeyS':
+                    case 'ArrowDown':
+                        this.moveBackward = false;
+                        break;
+                        
+                    case 'KeyA':
+                    case 'ArrowLeft':
+                        this.moveLeft = false;
+                        break;
+                        
+                    case 'KeyD':
+                    case 'ArrowRight':
+                        this.moveRight = false;
+                        break;
+                }
+            }
+            
+            // Navigate to temple scene
+            navigateToTempleScene() {
+                if (!this.transitioningToTemple) {
+                    this.transitioningToTemple = true;
                     
-                case 'KeyS':
-                case 'ArrowDown':
-                    this.moveBackward = true;
-                    break;
+                    this.showSubtitle("You have reached the Temple of Apollo...");
                     
-                case 'KeyA':
-                case 'ArrowLeft':
-                    this.moveLeft = true;
-                    break;
-                    
-                case 'KeyD':
-                case 'ArrowRight':
-                    this.moveRight = true;
-                    break;
-                    
-                case 'Space':
-                    // Skip cutscene if in one
-                    if (this.inCutscene) {
-                        this.endCutscene();
-                    }
-                    break;
+                    setTimeout(() => {
+                        this.fadeOut(() => {
+                            window.location.href = 'temple-entrance.html';
+                        });
+                    }, 3000);
+                }
             }
         }
         
-        // Handle keyup events
-        onKeyUp(event) {
-            switch (event.code) {
-                case 'KeyW':
-                case 'ArrowUp':
-                    this.moveForward = false;
-                    break;
-                    
-                case 'KeyS':
-                case 'ArrowDown':
-                    this.moveBackward = false;
-                    break;
-                    
-                case 'KeyA':
-                case 'ArrowLeft':
-                    this.moveLeft = false;
-                    break;
-                    
-                case 'KeyD':
-                case 'ArrowRight':
-                    this.moveRight = false;
-                    break;
-            }
-        }
-        
-        // Navigate to temple scene
-        navigateToTempleScene() {
-            if (!this.transitioningToTemple) {
-                this.transitioningToTemple = true;
-                
-                this.showSubtitle("You have reached the Temple of Apollo...");
-                
-                setTimeout(() => {
-                    this.fadeOut(() => {
-                        window.location.href = 'temple-entrance.html';
-                    });
-                }, 3000);
-            }
-        }
-    }
+        // Initialize the scene manager
+        let sceneManager = new SceneManager();
+    </script>
     
-    // Initialize the scene manager
-    let sceneManager = new SceneManager();
-</script>
+    <!-- RPG Effects Script -->
+    <script src="rpg-effects.js"></script>
 </body>
 </html>

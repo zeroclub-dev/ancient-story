@@ -10,1286 +10,1493 @@
             overflow: hidden;
             font-family: 'Georgia', serif;
         }
-    /* Fade transition */
-    #fade-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        opacity: 1;
-        z-index: 100;
-        transition: opacity 2s ease;
-        pointer-events: none;
-    }
-    
-    /* Subtitle styling */
-    #subtitle {
-        position: absolute;
-        bottom: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 18px;
-        z-index: 90;
-        opacity: 0;
-        transition: opacity 1s ease;
-        text-align: center;
-        max-width: 80%;
-    }
-    
-    /* Interaction prompt */
-    #interaction-prompt {
-        position: absolute;
-        bottom: 5%;
-        right: 5%;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 8px 16px;
-        border-radius: 5px;
-        font-size: 14px;
-        z-index: 90;
-        opacity: 0;
-        transition: opacity 1s ease;
-    }
-    
-    /* Instrument info panel */
-    #info-panel {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        max-width: 800px;
-        background-color: rgba(0, 0, 0, 0.8);
-        border: 2px solid #f5deb3;
-        border-radius: 5px;
-        padding: 20px;
-        color: white;
-        z-index: 95;
-        display: none;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-    
-    #info-panel h2 {
-        color: #f5deb3;
-        font-size: 24px;
-        margin-bottom: 10px;
-        text-align: center;
-        border-bottom: 1px solid #f5deb3;
-        padding-bottom: 10px;
-    }
-    
-    #info-panel p {
-        font-size: 16px;
-        line-height: 1.6;
-        margin-bottom: 15px;
-    }
-    
-    #info-close {
-        text-align: center;
-        margin-top: 20px;
-        color: #f5deb3;
-        cursor: pointer;
-        font-style: italic;
-    }
-</style>
+        /* Fade transition */
+        #fade-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 1;
+            z-index: 100;
+            transition: opacity 2s ease;
+            pointer-events: none;
+        }
+        
+        /* Subtitle styling */
+        #subtitle {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 1s ease;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        /* Interaction prompt */
+        #interaction-prompt {
+            position: absolute;
+            bottom: 5%;
+            right: 5%;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        /* Instrument info panel */
+        #info-panel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #f5deb3;
+            border-radius: 5px;
+            padding: 20px;
+            color: white;
+            z-index: 95;
+            display: none;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        #info-panel h2 {
+            color: #f5deb3;
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 1px solid #f5deb3;
+            padding-bottom: 10px;
+        }
+        
+        #info-panel p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        /* Instrument image styling */
+        .instrument-image-container {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .instrument-image {
+            max-width: 100%;
+            max-height: 250px;
+            border: 2px solid #f5deb3;
+            border-radius: 5px;
+        }
+        
+        .image-caption {
+            font-style: italic;
+            font-size: 14px;
+            color: #cccccc;
+            margin-top: 5px;
+        }
+        
+        #info-close {
+            text-align: center;
+            margin-top: 20px;
+            color: #f5deb3;
+            cursor: pointer;
+            font-style: italic;
+        }
+        
+        /* Dialog box for RPG-style text */
+        #dialog-box {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 800px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid #f5deb3;
+            border-radius: 5px;
+            padding: 20px;
+            color: white;
+            z-index: 95;
+            display: none;
+        }
+        
+        #dialog-text {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        #dialog-continue {
+            color: #f5deb3;
+            text-align: right;
+            font-style: italic;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div id="fade-overlay"></div>
     <div id="subtitle"></div>
     <div id="interaction-prompt"></div>
-<div id="info-panel">
-    <h2 id="instrument-name">Instrument Name</h2>
-    <div id="instrument-description">
-        <!-- Instrument description will be inserted here -->
+    <div id="info-panel">
+        <h2 id="instrument-name">Instrument Name</h2>
+        <div id="instrument-description">
+            <!-- Instrument description will be inserted here -->
+        </div>
+        <div id="info-close">Click to close</div>
     </div>
-    <div id="info-close">Click to close</div>
-</div>
+    <div id="dialog-box">
+        <div id="dialog-text">Information about ancient Greek music will appear here.</div>
+        <div id="dialog-continue">Click to continue...</div>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<script>
-    // Scene Manager Class
-    class SceneManager {
-        constructor() {
-            this.scene = new THREE.Scene();
-            this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            this.renderer = new THREE.WebGLRenderer({ antialias: true });
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-            this.renderer.setClearColor(0x000011); // Dark blue background
-            this.renderer.shadowMap.enabled = true;
-            document.body.appendChild(this.renderer.domElement);
-            
-            // State tracking
-            this.inCutscene = true;
-            this.showingInfo = false;
-            this.playerCanMove = false;
-            this.cutsceneSteps = [];
-            this.currentCutsceneStep = 0;
-            
-            // Instrument information
-            this.instrumentInfo = {
-                lyre: {
-                    name: "Lyre (Chelys Lyre)",
-                    description: `
-                        <p>The lyre was one of the most important stringed instruments in ancient Greece, closely associated with Apollo and the arts. It consisted of a resonator made from a tortoise shell covered with oxhide, two raised arms (often made of wood or horn), and a crossbar connecting the arms with typically seven gut strings running from the yoke to a bridge on the shell.</p>
-                        
-                        <p>According to mythology, Hermes invented the first lyre by hollowing out a tortoise shell, attaching horn arms and a crossbar, and stringing it with sheep-gut. This story is vividly described in the Homeric Hymn to Hermes.</p>
-                        
-                        <p>The lyre was played by strumming with a plectrum (pick) in the right hand while the left hand dampened unwanted strings. Unlike a harp, it was usually strummed rather than plucked, allowing chords and rhythmic accompaniment to singing.</p>
-                        
-                        <p>Every educated Greek male was expected to learn the lyre, and it accompanied the recitation of lyric poetry. Homer's Iliad depicts Achilles soothing his heart by singing tales of heroes to the lyre. The instrument symbolized harmony and civilization, often contrasted with the wilder music of wind instruments like the aulos.</p>
-                    `
-                },
-                kithara: {
-                    name: "Kithara (Cithara)",
-                    description: `
-                        <p>The kithara was a larger, professional version of the lyre with a wooden box resonator rather than a tortoise shell. It featured a deep wooden sound box with flat front and back boards and side ribs, typically with seven strings like the lyre, but its robust construction gave it a louder, richer tone.</p>
-                        
-                        <p>The kithara was the concert instrument of ancient Greece, used by skilled musicians called kitharodes who performed at festivals and competitions. It was considered the pinnacle of Greek musical artistry and was central to competitions like the Panathenaic Games in Athens.</p>
-                        
-                        <p>Like the lyre, the kithara was played with a plectrum, but it demanded greater strength and skill. A kitharode would strike powerful sweeping chords and rapid arpeggios, using the left hand to mute strings. Some sources mention kithara players shaking the instrument to create vibrato effects.</p>
-                        
-                        <p>Apollo was frequently depicted holding a kithara as the leader of the Muses, emphasizing its status as a divine instrument. In contrast to the rustic lyre, the kithara was associated with virtuosos and professional musicians.</p>
-                    `
-                },
-                aulos: {
-                    name: "Aulos (Double Pipes)",
-                    description: `
-                        <p>The aulos was the most prominent Greek wind instrument - essentially a double-reeded pipe, often played in pairs (double aulos). It consisted of two pipes, typically made of wood, bone, or ivory, each fitted with a reed mouthpiece. When played together, they produced a powerful, penetrating sound somewhat similar to an oboe or shawm.</p>
-                        
-                        <p>Each pipe had a double reed at the top (two thin blades of cane that vibrated against each other) and finger holes along its length to produce different notes. The player would put both reeds in the mouth at once, using circular breathing to sustain sound. To help with the intense blowing pressure, players wore a leather strap called a phorbeia across the cheeks.</p>
-                        
-                        <p>The aulos was known for its intense, emotional tone and was used in a wide range of settings from religious rituals to theater performances and military marches. It was indispensable in Greek tragedy, providing musical accompaniment to chorus performances.</p>
-                        
-                        <p>In mythology, the aulos was strongly associated with Dionysian worship. The satyr Marsyas plays the aulos and challenges Apollo's lyre (and loses), symbolizing the tension between wild aulos music and the lyre's ordered harmony.</p>
-                    `
-                },
-                syrinx: {
-                    name: "Syrinx (Pan Flute)",
-                    description: `
-                        <p>The syrinx, commonly known as Pan's pipes or pan flute, was a wind instrument made of a row of cane pipes of graduated lengths joined together. It produced sound by the player blowing across the tops of the open pipes, each pipe giving a different note.</p>
-                        
-                        <p>A typical pan flute consisted of several reed or bamboo tubes, each stopped at the bottom and open at the top. The tubes were cut to different lengths to tune them to desired pitches and bound together side by side using flax cords, wooden splints, or beeswax.</p>
-                        
-                        <p>The pan flute was closely associated with rustic settings, shepherds, and the god Pan. According to mythology, the nymph Syrinx, pursued by amorous Pan, was transformed into reeds by Artemis. Finding only reeds where Syrinx had stood, Pan cut and bound them into the first pan flute, naming it after the nymph.</p>
-                        
-                        <p>The sound of the syrinx is sweet, breathy, and hauntingly mellow – well-suited to outdoor atmosphere but not very loud. Shepherds in the countryside used it to entertain themselves while watching their flocks.</p>
-                    `
-                },
-                tympanon: {
-                    name: "Tympanon (Frame Drum)",
-                    description: `
-                        <p>The tympanon was a handheld drum resembling a tambourine (often without jingles) widely used in ancient Greek music, especially in ecstatic religious rites. It consisted of a circular wooden frame covered on one side with stretched animal hide, producing a deep, resonant thud or boom when struck.</p>
-                        
-                        <p>Typically held in one hand and struck with the other, the tympanon was used to maintain rhythmic pulse in music. In frenzied cult music, the incessant beat was key to inducing trance-like states.</p>
-                        
-                        <p>The frame drum was especially associated with the worship of Dionysus (god of wine and ecstasy) and the Great Mother Cybele. In Euripides' Bacchae, the Bacchants (maenads) shake tambourines and drums as they revel on the mountains.</p>
-                        
-                        <p>The drum's rhythm was thought to inspire divine madness or communion with the gods. Many artworks depict maenads dancing with tympana - the instrument symbolized the ecstatic and feminine side of music, as it was more often played by women in art.</p>
-                    `
-                },
-                krotala: {
-                    name: "Krotala (Clappers/Castanets)",
-                    description: `
-                        <p>Krotala were percussion clappers, analogous to castanets or rhythm bones, used to produce clicking rhythms in Greek music. They were pairs of concave pieces - made of wood, bone, ivory, or metal - clashed together either in the hands or worn on the fingers.</p>
-                        
-                        <p>The simplest krotala were like two short sticks or pieces of wood held and slapped together. Others resembled finger castanets: small cups or shells tied to the thumb and middle finger, then snapped together by finger motion.</p>
-                        
-                        <p>Dancers would often play krotala while dancing, rhythmically striking the pieces together in time with music. The speed could be very fast, with skilled performers creating a rollicking rattle of clicks.</p>
-                        
-                        <p>Like the frame drum and cymbals, krotala were commonly associated with dance and the worship of Dionysus and Cybele. Maenads in Dionysian processions are frequently shown with krotala, adding to the cacophony of ritual music.</p>
-                    `
-                },
-                kymbala: {
-                    name: "Kymbala (Cymbals)",
-                    description: `
-                        <p>Kymbala were small bronze cymbals - essentially metal discs - clashed together to create a ringing beat. Each cymbal was a concave bronze disk with a raised center for holding, and performers held one cymbal in each hand, striking them together rhythmically.</p>
-                        
-                        <p>These cymbals were especially used in orgiastic religious rites and festive dances, similar to the frame drum and krotala. They were known since Minoan-Mycenaean times and likely came via eastern influence.</p>
-                        
-                        <p>Greeks specifically associated cymbals with the cult of the Great Mother (Cybele) and of Dionysus. Literary sources describe the "clash of bronze cymbals" rousing worshippers to ecstasy. The goddess Cybele's attendants (Corybantes) were often depicted banging cymbals and drums in frenzied celebration.</p>
-                        
-                        <p>Archaeologically, many pairs of cymbals have been found - often in graves of women or in sanctuary deposits, confirming their role in women's musical activities and possibly in cult.</p>
-                    `
+    
+
+    <!-- RPG Effects Script -->
+    <script src="rpg-effects.js"></script>
+    
+    <!-- Create placeholder folder for images at runtime if in a simple local test environment -->
+    <script>
+        // This is a simple helper script to create folders and placeholders if images are missing
+        // It will only run if images are not found
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we have any instrument info panels visible
+            document.addEventListener('error', function(e) {
+                const target = e.target;
+                // Only handle image loading errors
+                if (target.tagName === 'IMG' && target.classList.contains('instrument-image')) {
+                    console.log('Image failed to load:', target.src);
+                    
+                    // Replace with placeholder
+                    target.src = createPlaceholderImage(target.alt);
+                    
+                    // Prevent the default error event
+                    e.preventDefault();
                 }
-            };
+            }, true); // Using capture phase to catch the error first
             
-            // Player
-            this.player = null;
-            this.playerHeight = 1.7;
-            this.playerVelocity = new THREE.Vector3();
-            this.playerDirection = new THREE.Vector3();
-            this.moveForward = false;
-            this.moveBackward = false;
-            this.moveLeft = false;
-            this.moveRight = false;
-            this.moveSpeed = 0.1;
-            
-            // Interactive objects
-            this.interactiveObjects = [];
-            this.currentInstrument = null;
-            
-            // DOM Elements
-            this.fadeOverlay = document.getElementById('fade-overlay');
-            this.subtitle = document.getElementById('subtitle');
-            this.interactionPrompt = document.getElementById('interaction-prompt');
-            this.infoPanel = document.getElementById('info-panel');
-            this.instrumentName = document.getElementById('instrument-name');
-            this.instrumentDescription = document.getElementById('instrument-description');
-            this.infoClose = document.getElementById('info-close');
-            
-            // Bind methods
-            this.animate = this.animate.bind(this);
-            this.onWindowResize = this.onWindowResize.bind(this);
-            this.closeInfoPanel = this.closeInfoPanel.bind(this);
-            
-            // Setup event listeners
-            window.addEventListener('resize', this.onWindowResize);
-            document.addEventListener('keydown', this.onKeyDown.bind(this));
-            document.addEventListener('keyup', this.onKeyUp.bind(this));
-            this.infoClose.addEventListener('click', this.closeInfoPanel);
-            
-            // Initialize scene
-            this.initScene();
-            
-            // Start animation loop
-            this.animate();
-            
-            // Start fade in and cutscene
-            setTimeout(() => {
-                this.fadeIn();
-                this.startCutscene();
-            }, 500);
-        }
-        
-        // Initialize the scene
-        initScene() {
-            // Add ambient light
-            const ambientLight = new THREE.AmbientLight(0x404080, 0.4);
-            this.scene.add(ambientLight);
-            
-            // Add point lights 
-            const pointLight1 = new THREE.PointLight(0xffffcc, 1, 30);
-            pointLight1.position.set(0, 5, 0);
-            this.scene.add(pointLight1);
-            
-            const pointLight2 = new THREE.PointLight(0xffffcc, 0.8, 20);
-            pointLight2.position.set(-10, 5, -10);
-            this.scene.add(pointLight2);
-            
-            const pointLight3 = new THREE.PointLight(0xffffcc, 0.8, 20);
-            pointLight3.position.set(10, 5, -10);
-            this.scene.add(pointLight3);
-            
-            // Create circular chamber room
-            this.createChamber();
-            
-            // Create player
-            const playerGeometry = new THREE.BoxGeometry(0.5, this.playerHeight, 0.5);
-            const playerMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
-            this.player = new THREE.Mesh(playerGeometry, playerMaterial);
-            this.player.position.set(0, this.playerHeight / 2, 10);
-            this.player.visible = false; // Hide player mesh
-            this.scene.add(this.player);
-            
-            // Create instruments displays
-            this.createInstrumentDisplays();
-            
-            // Set initial camera position for cutscene
-            this.camera.position.set(0, 5, 20);
-            this.camera.lookAt(0, 0, 0);
-        }
-        
-        // Create circular chamber
-        createChamber() {
-            // Create floor
-            const floorGeometry = new THREE.CircleGeometry(15, 32);
-            const floorMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x111122,
-                roughness: 0.5,
-                metalness: 0.3
-            });
-            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-            floor.rotation.x = -Math.PI / 2;
-            floor.receiveShadow = true;
-            this.scene.add(floor);
-            
-            // Create ceiling
-            const ceilingGeometry = new THREE.CircleGeometry(15, 32);
-            const ceilingMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x111122,
-                roughness: 0.5,
-                metalness: 0.3
-            });
-            const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
-            ceiling.rotation.x = Math.PI / 2;
-            ceiling.position.y = 8;
-            this.scene.add(ceiling);
-            
-            // Create circular wall
-            const wallGeometry = new THREE.CylinderGeometry(15, 15, 8, 32, 1, true);
-            const wallMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x222233,
-                roughness: 0.7,
-                metalness: 0.2,
-                side: THREE.BackSide // Render on inside surface
-            });
-            const wall = new THREE.Mesh(wallGeometry, wallMaterial);
-            wall.position.y = 4;
-            this.scene.add(wall);
-            
-            // Create central pedestal
-            const pedestalGeometry = new THREE.CylinderGeometry(1, 1.5, 1, 16);
-            const pedestalMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x444455,
-                roughness: 0.5,
-                metalness: 0.3
-            });
-            const pedestal = new THREE.Mesh(pedestalGeometry, pedestalMaterial);
-            pedestal.position.y = 0.5;
-            pedestal.castShadow = true;
-            pedestal.receiveShadow = true;
-            this.scene.add(pedestal);
-            
-            // Add central light beam
-            const lightBeamGeometry = new THREE.CylinderGeometry(0.5, 0.5, 8, 16);
-            const lightBeamMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xffffbb,
-                transparent: true,
-                opacity: 0.2
-            });
-            const lightBeam = new THREE.Mesh(lightBeamGeometry, lightBeamMaterial);
-            lightBeam.position.y = 4;
-            this.scene.add(lightBeam);
-            
-            // Add decorative pillars around the chamber
-            this.createDecorativePillars();
-            
-            // Create entrance portal
-            this.createEntrancePortal();
-        }
-        
-        // Create decorative pillars
-        createDecorativePillars() {
-            const pillarGeometry = new THREE.CylinderGeometry(0.5, 0.5, 8, 16);
-            const pillarMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x333344,
-                roughness: 0.6,
-                metalness: 0.2
-            });
-            
-            // Create pillars around the chamber
-            const pillarCount = 8;
-            for (let i = 0; i < pillarCount; i++) {
-                const angle = (i / pillarCount) * Math.PI * 2;
-                const radius = 14;
+            // Create a placeholder image based on the instrument name
+            function createPlaceholderImage(instrumentName) {
+                // Create a canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = 400;
+                canvas.height = 300;
+                const ctx = canvas.getContext('2d');
                 
-                const pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
-                pillar.position.set(
-                    Math.sin(angle) * radius,
-                    4,
-                    Math.cos(angle) * radius
-                );
-                pillar.castShadow = true;
-                pillar.receiveShadow = true;
-                this.scene.add(pillar);
+                // Fill background
+                ctx.fillStyle = '#222';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw text
+                ctx.fillStyle = '#f5deb3';
+                ctx.font = 'bold 30px Georgia';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(instrumentName, canvas.width / 2, canvas.height / 2);
+                ctx.font = '16px Georgia';
+                ctx.fillText('Placeholder Image', canvas.width / 2, canvas.height / 2 + 40);
+                
+                // Return data URL
+                return canvas.toDataURL('image/png');
             }
-        }
-        
-        // Create entrance portal
-        createEntrancePortal() {
-            const portalGroup = new THREE.Group();
-            
-            // Create portal ring
-            const ringGeometry = new THREE.TorusGeometry(2, 0.3, 16, 32);
-            const ringMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xd4af37,
-                emissive: 0xffcc77,
-                emissiveIntensity: 0.3
-            });
-            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-            ring.position.y = 2;
-            portalGroup.add(ring);
-            
-            // Create portal energy effect
-            const portalGeometry = new THREE.CircleGeometry(1.7, 32);
-            const portalMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xffffbb,
-                transparent: true,
-                opacity: 0.7
-            });
-            const portal = new THREE.Mesh(portalGeometry, portalMaterial);
-            portal.position.y = 2;
-            portalGroup.add(portal);
-            
-            portalGroup.position.set(0, 0, 14.9);
-            portalGroup.rotation.y = Math.PI;
-            this.scene.add(portalGroup);
-            
-            // Add portal light
-            const portalLight = new THREE.PointLight(0xffffcc, 1, 8);
-            portalLight.position.set(0, 2, 14);
-            this.scene.add(portalLight);
-            
-            // Add as interactive object
-            this.interactiveObjects.push({
-                type: 'portal',
-                object: portalGroup,
-                position: new THREE.Vector3(0, 2, 14),
-                radius: 3,
-                interact: () => this.exitChamber()
-            });
-        }
-        
-        // Create instrument displays
-        createInstrumentDisplays() {
-            // Position instruments in a circle around the chamber
-            const instrumentsToCreate = [
-                { id: 'lyre', name: 'Lyre', angle: 0 },
-                { id: 'kithara', name: 'Kithara', angle: Math.PI / 3 },
-                { id: 'aulos', name: 'Aulos', angle: 2 * Math.PI / 3 },
-                { id: 'syrinx', name: 'Syrinx', angle: Math.PI },
-                { id: 'tympanon', name: 'Tympanon', angle: 4 * Math.PI / 3 },
-                { id: 'krotala', name: 'Krotala', angle: 5 * Math.PI / 3 }
+        });
+    </script>
+    
+    <!-- Script to preload all images to ensure they're available when needed -->
+    <script>
+        // Preload all instrument images
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageList = [
+                'images/lyre.png',
+                'images/kithara.png',
+                'images/aulos.png',
+                'images/syrinx.png',
+                'images/tympanon.png',
+                'images/krotala.png',
+                'images/kymbala.png'
             ];
             
-            instrumentsToCreate.forEach(instrument => {
-                this.createInstrumentDisplay(instrument.id, instrument.name, instrument.angle);
+            // Preload the images
+            imageList.forEach(src => {
+                const img = new Image();
+                img.src = src;
             });
-        }
-        
-        // Create an individual instrument display
-        createInstrumentDisplay(id, name, angle) {
-            const radius = 10; // Distance from center
+        });
+    </script>
+    <script>
+       
+        // Scene Manager Class
+        class SceneManager {
+            constructor() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer({ antialias: true });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setClearColor(0x000011); // Dark blue background
+                this.renderer.shadowMap.enabled = true;
+                document.body.appendChild(this.renderer.domElement);
+                
+                // State tracking
+                this.inCutscene = true;
+                this.showingInfo = false;
+                this.playerCanMove = false;
+                this.cutsceneSteps = [];
+                this.currentCutsceneStep = 0;
+                
+                // Instrument information with added image paths
+                this.instrumentInfo = {
+                    lyre: {
+                        name: "Lyre (Chelys Lyre)",
+                        imagePath: "images/lyre.png",
+                        imageCaption: "Ancient Greek lyre depicted on a red-figure vase, 5th century BCE",
+                        description: `
+                            <p>The lyre was one of the most important stringed instruments in ancient Greece, closely associated with Apollo and the arts. It consisted of a resonator made from a tortoise shell covered with oxhide, two raised arms (often made of wood or horn), and a crossbar connecting the arms with typically seven gut strings running from the yoke to a bridge on the shell.</p>
+                            
+                            <p>According to mythology, Hermes invented the first lyre by hollowing out a tortoise shell, attaching horn arms and a crossbar, and stringing it with sheep-gut. This story is vividly described in the Homeric Hymn to Hermes.</p>
+                            
+                            <p>The lyre was played by strumming with a plectrum (pick) in the right hand while the left hand dampened unwanted strings. Unlike a harp, it was usually strummed rather than plucked, allowing chords and rhythmic accompaniment to singing.</p>
+                            
+                            <p>Every educated Greek male was expected to learn the lyre, and it accompanied the recitation of lyric poetry. Homer's Iliad depicts Achilles soothing his heart by singing tales of heroes to the lyre. The instrument symbolized harmony and civilization, often contrasted with the wilder music of wind instruments like the aulos.</p>
+                        `
+                    },
+                    kithara: {
+                        name: "Kithara (Cithara)",
+                        imagePath: "images/kithara.png",
+                        imageCaption: "Apollo playing the kithara, detail from an Attic red-figure amphora, c. 480 BCE",
+                        description: `
+                            <p>The kithara was a larger, professional version of the lyre with a wooden box resonator rather than a tortoise shell. It featured a deep wooden sound box with flat front and back boards and side ribs, typically with seven strings like the lyre, but its robust construction gave it a louder, richer tone.</p>
+                            
+                            <p>The kithara was the concert instrument of ancient Greece, used by skilled musicians called kitharodes who performed at festivals and competitions. It was considered the pinnacle of Greek musical artistry and was central to competitions like the Panathenaic Games in Athens.</p>
+                            
+                            <p>Like the lyre, the kithara was played with a plectrum, but it demanded greater strength and skill. A kitharode would strike powerful sweeping chords and rapid arpeggios, using the left hand to mute strings. Some sources mention kithara players shaking the instrument to create vibrato effects.</p>
+                            
+                            <p>Apollo was frequently depicted holding a kithara as the leader of the Muses, emphasizing its status as a divine instrument. In contrast to the rustic lyre, the kithara was associated with virtuosos and professional musicians.</p>
+                        `
+                    },
+                    aulos: {
+                        name: "Aulos (Double Pipes)",
+                        imagePath: "images/aulos.png",
+                        imageCaption: "Female musician playing the double aulos, from a symposium scene on a Greek vase, c. 490 BCE",
+                        description: `
+                            <p>The aulos was the most prominent Greek wind instrument - essentially a double-reeded pipe, often played in pairs (double aulos). It consisted of two pipes, typically made of wood, bone, or ivory, each fitted with a reed mouthpiece. When played together, they produced a powerful, penetrating sound somewhat similar to an oboe or shawm.</p>
+                            
+                            <p>Each pipe had a double reed at the top (two thin blades of cane that vibrated against each other) and finger holes along its length to produce different notes. The player would put both reeds in the mouth at once, using circular breathing to sustain sound. To help with the intense blowing pressure, players wore a leather strap called a phorbeia across the cheeks.</p>
+                            
+                            <p>The aulos was known for its intense, emotional tone and was used in a wide range of settings from religious rituals to theater performances and military marches. It was indispensable in Greek tragedy, providing musical accompaniment to chorus performances.</p>
+                            
+                            <p>In mythology, the aulos was strongly associated with Dionysian worship. The satyr Marsyas plays the aulos and challenges Apollo's lyre (and loses), symbolizing the tension between wild aulos music and the lyre's ordered harmony.</p>
+                        `
+                    },
+                    syrinx: {
+                        name: "Syrinx (Pan Flute)",
+                        imagePath: "images/syrinx.png",
+                        imageCaption: "Pan playing the syrinx (pan flute), marble relief, Hellenistic period",
+                        description: `
+                            <p>The syrinx, commonly known as Pan's pipes or pan flute, was a wind instrument made of a row of cane pipes of graduated lengths joined together. It produced sound by the player blowing across the tops of the open pipes, each pipe giving a different note.</p>
+                            
+                            <p>A typical pan flute consisted of several reed or bamboo tubes, each stopped at the bottom and open at the top. The tubes were cut to different lengths to tune them to desired pitches and bound together side by side using flax cords, wooden splints, or beeswax.</p>
+                            
+                            <p>The pan flute was closely associated with rustic settings, shepherds, and the god Pan. According to mythology, the nymph Syrinx, pursued by amorous Pan, was transformed into reeds by Artemis. Finding only reeds where Syrinx had stood, Pan cut and bound them into the first pan flute, naming it after the nymph.</p>
+                            
+                            <p>The sound of the syrinx is sweet, breathy, and hauntingly mellow – well-suited to outdoor atmosphere but not very loud. Shepherds in the countryside used it to entertain themselves while watching their flocks.</p>
+                        `
+                    },
+                    tympanon: {
+                        name: "Tympanon (Frame Drum)",
+                        imagePath: "images/tympanon.png",
+                        imageCaption: "Maenad playing the tympanon during a Dionysian ritual, red-figure kylix, c. 480 BCE",
+                        description: `
+                            <p>The tympanon was a handheld drum resembling a tambourine (often without jingles) widely used in ancient Greek music, especially in ecstatic religious rites. It consisted of a circular wooden frame covered on one side with stretched animal hide, producing a deep, resonant thud or boom when struck.</p>
+                            
+                            <p>Typically held in one hand and struck with the other, the tympanon was used to maintain rhythmic pulse in music. In frenzied cult music, the incessant beat was key to inducing trance-like states.</p>
+                            
+                            <p>The frame drum was especially associated with the worship of Dionysus (god of wine and ecstasy) and the Great Mother Cybele. In Euripides' Bacchae, the Bacchants (maenads) shake tambourines and drums as they revel on the mountains.</p>
+                            
+                            <p>The drum's rhythm was thought to inspire divine madness or communion with the gods. Many artworks depict maenads dancing with tympana - the instrument symbolized the ecstatic and feminine side of music, as it was more often played by women in art.</p>
+                        `
+                    },
+                    krotala: {
+                        name: "Krotala (Clappers/Castanets)",
+                        imagePath: "images/krotala.png",
+                        imageCaption: "Dancer with krotala, detail from an Attic red-figure vase, 5th century BCE",
+                        description: `
+                            <p>Krotala were percussion clappers, analogous to castanets or rhythm bones, used to produce clicking rhythms in Greek music. They were pairs of concave pieces - made of wood, bone, ivory, or metal - clashed together either in the hands or worn on the fingers.</p>
+                            
+                            <p>The simplest krotala were like two short sticks or pieces of wood held and slapped together. Others resembled finger castanets: small cups or shells tied to the thumb and middle finger, then snapped together by finger motion.</p>
+                            
+                            <p>Dancers would often play krotala while dancing, rhythmically striking the pieces together in time with music. The speed could be very fast, with skilled performers creating a rollicking rattle of clicks.</p>
+                            
+                            <p>Like the frame drum and cymbals, krotala were commonly associated with dance and the worship of Dionysus and Cybele. Maenads in Dionysian processions are frequently shown with krotala, adding to the cacophony of ritual music.</p>
+                        `
+                    },
+                    kymbala: {
+                        name: "Kymbala (Cymbals)",
+                        imagePath: "images/kymbala.png",
+                        imageCaption: "Bronze kymbala (cymbals) from ancient Greece, Archaeological Museum of Athens",
+                        description: `
+                            <p>Kymbala were small bronze cymbals - essentially metal discs - clashed together to create a ringing beat. Each cymbal was a concave bronze disk with a raised center for holding, and performers held one cymbal in each hand, striking them together rhythmically.</p>
+                            
+                            <p>These cymbals were especially used in orgiastic religious rites and festive dances, similar to the frame drum and krotala. They were known since Minoan-Mycenaean times and likely came via eastern influence.</p>
+                            
+                            <p>Greeks specifically associated cymbals with the cult of the Great Mother (Cybele) and of Dionysus. Literary sources describe the "clash of bronze cymbals" rousing worshippers to ecstasy. The goddess Cybele's attendants (Corybantes) were often depicted banging cymbals and drums in frenzied celebration.</p>
+                            
+                            <p>Archaeologically, many pairs of cymbals have been found - often in graves of women or in sanctuary deposits, confirming their role in women's musical activities and possibly in cult.</p>
+                        `
+                    }
+                };
+                
+                // Player
+                this.player = null;
+                this.playerHeight = 1.7;
+                this.playerVelocity = new THREE.Vector3();
+                this.playerDirection = new THREE.Vector3();
+                this.moveForward = false;
+                this.moveBackward = false;
+                this.moveLeft = false;
+                this.moveRight = false;
+                this.moveSpeed = 0.1;
+                
+                // Interactive objects
+                this.interactiveObjects = [];
+                
+                // DOM Elements
+                this.fadeOverlay = document.getElementById('fade-overlay');
+                this.subtitle = document.getElementById('subtitle');
+                this.interactionPrompt = document.getElementById('interaction-prompt');
+                this.infoPanel = document.getElementById('info-panel');
+                this.instrumentName = document.getElementById('instrument-name');
+                this.instrumentDescription = document.getElementById('instrument-description');
+                this.infoClose = document.getElementById('info-close');
+                this.dialogBox = document.getElementById('dialog-box');
+                this.dialogText = document.getElementById('dialog-text');
+                this.dialogContinue = document.getElementById('dialog-continue');
+                
+                // Bind methods
+                this.animate = this.animate.bind(this);
+                this.onWindowResize = this.onWindowResize.bind(this);
+                this.closeInfoPanel = this.closeInfoPanel.bind(this);
+                
+                // Setup event listeners
+                window.addEventListener('resize', this.onWindowResize);
+                document.addEventListener('keydown', this.onKeyDown.bind(this));
+                document.addEventListener('keyup', this.onKeyUp.bind(this));
+                this.infoClose.addEventListener('click', this.closeInfoPanel);
+                this.dialogContinue.addEventListener('click', () => {
+                    // Skip text if still animating, otherwise close dialog
+                    if (window.gameManager && window.gameManager.textDisplayController.isDisplaying) {
+                        window.gameManager.textDisplayController.skipToEnd();
+                    } else {
+                        this.hideDialog();
+                    }
+                });
+                
+                // Initialize scene
+                this.initScene();
+                
+                // Start animation loop
+                this.animate();
+                
+                // Start fade in and cutscene
+                setTimeout(() => {
+                    this.fadeIn();
+                    this.startCutscene();
+                }, 500);
+                
+                // Expose sceneManager globally for RPG effects to access
+                window.sceneManager = this;
+                
+                // Dispatch event that scene manager is initialized
+                const event = new CustomEvent('sceneManagerInitialized', { detail: { sceneManager: this } });
+                window.dispatchEvent(event);
+            }
             
-            // Calculate position
-            const x = Math.sin(angle) * radius;
-            const z = Math.cos(angle) * radius;
+            // Initialize the scene
+            initScene() {
+                // Add ambient light
+                const ambientLight = new THREE.AmbientLight(0x404080, 0.4);
+                this.scene.add(ambientLight);
+                
+                // Add point lights 
+                const pointLight1 = new THREE.PointLight(0xffffcc, 1, 30);
+                pointLight1.position.set(0, 5, 0);
+                this.scene.add(pointLight1);
+                
+                const pointLight2 = new THREE.PointLight(0xffffcc, 0.8, 20);
+                pointLight2.position.set(-10, 5, -10);
+                this.scene.add(pointLight2);
+                
+                const pointLight3 = new THREE.PointLight(0xffffcc, 0.8, 20);
+                pointLight3.position.set(10, 5, -10);
+                this.scene.add(pointLight3);
+                
+                // Create circular chamber room
+                this.createChamber();
+                
+                // Create player
+                const playerGeometry = new THREE.BoxGeometry(0.5, this.playerHeight, 0.5);
+                const playerMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+                this.player = new THREE.Mesh(playerGeometry, playerMaterial);
+                this.player.position.set(0, this.playerHeight / 2, 10);
+                this.player.visible = false; // Hide player mesh
+                this.scene.add(this.player);
+                
+                // Create instruments displays
+                this.createInstrumentDisplays();
+                
+                // Set initial camera position for cutscene
+                this.camera.position.set(0, 5, 20);
+                this.camera.lookAt(0, 0, 0);
+            }
             
-            // Create display platform
-            const platformGeometry = new THREE.CylinderGeometry(1.5, 1.5, 0.5, 16);
-            const platformMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x444455,
-                roughness: 0.5,
-                metalness: 0.3
-            });
-            const platform = new THREE.Mesh(platformGeometry, platformMaterial);
-            platform.position.set(x, 0.25, z);
-            platform.castShadow = true;
-            platform.receiveShadow = true;
-            this.scene.add(platform);
+            // Create circular chamber
+            createChamber() {
+                // Create floor
+                const floorGeometry = new THREE.CircleGeometry(15, 32);
+                const floorMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x111122,
+                    roughness: 0.5,
+                    metalness: 0.3
+                });
+                const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+                floor.rotation.x = -Math.PI / 2;
+                floor.receiveShadow = true;
+                this.scene.add(floor);
+                
+                // Create ceiling
+                const ceilingGeometry = new THREE.CircleGeometry(15, 32);
+                const ceilingMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x111122,
+                    roughness: 0.5,
+                    metalness: 0.3
+                });
+                const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
+                ceiling.rotation.x = Math.PI / 2;
+                ceiling.position.y = 8;
+                this.scene.add(ceiling);
+                
+                // Create circular wall
+                const wallGeometry = new THREE.CylinderGeometry(15, 15, 8, 32, 1, true);
+                const wallMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x222233,
+                    roughness: 0.7,
+                    metalness: 0.2,
+                    side: THREE.BackSide // Render on inside surface
+                });
+                const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+                wall.position.y = 4;
+                this.scene.add(wall);
+                
+                // Create central pedestal
+                const pedestalGeometry = new THREE.CylinderGeometry(1, 1.5, 1, 16);
+                const pedestalMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x444455,
+                    roughness: 0.5,
+                    metalness: 0.3
+                });
+                const pedestal = new THREE.Mesh(pedestalGeometry, pedestalMaterial);
+                pedestal.position.y = 0.5;
+                pedestal.castShadow = true;
+                pedestal.receiveShadow = true;
+                this.scene.add(pedestal);
+                
+                // Add central light beam
+                const lightBeamGeometry = new THREE.CylinderGeometry(0.5, 0.5, 8, 16);
+                const lightBeamMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0xffffbb,
+                    transparent: true,
+                    opacity: 0.2
+                });
+                const lightBeam = new THREE.Mesh(lightBeamGeometry, lightBeamMaterial);
+                lightBeam.position.y = 4;
+                this.scene.add(lightBeam);
+                
+                // Add decorative pillars around the chamber
+                this.createDecorativePillars();
+                
+                // Create entrance portal
+                this.createEntrancePortal();
+            }
             
-            // Create instrument model based on its type
-            const instrumentGroup = new THREE.Group();
+            // Create decorative pillars
+            createDecorativePillars() {
+                const pillarGeometry = new THREE.CylinderGeometry(0.5, 0.5, 8, 16);
+                const pillarMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x333344,
+                    roughness: 0.6,
+                    metalness: 0.2
+                });
+                
+                // Create pillars around the chamber
+                const pillarCount = 8;
+                for (let i = 0; i < pillarCount; i++) {
+                    const angle = (i / pillarCount) * Math.PI * 2;
+                    const radius = 14;
+                    
+                    const pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+                    pillar.position.set(
+                        Math.sin(angle) * radius,
+                        4,
+                        Math.cos(angle) * radius
+                    );
+                    pillar.castShadow = true;
+                    pillar.receiveShadow = true;
+                    this.scene.add(pillar);
+                }
+            }
             
-            switch(id) {
-                case 'lyre':
-                    this.createLyreModel(instrumentGroup);
-                    break;
-                case 'kithara':
-                    this.createKitharaModel(instrumentGroup);
-                    break;
-                case 'aulos':
-                    this.createAulosModel(instrumentGroup);
-                    break;
-                case 'syrinx':
-                    this.createSyrinxModel(instrumentGroup);
-                    break;
-                case 'tympanon':
-                    this.createTympanonModel(instrumentGroup);
-                    break;
-                case 'krotala':
-                    this.createKrotalaModel(instrumentGroup);
-                    break;
-                default:
-                    // Create a placeholder cube if instrument not defined
-                    const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-                    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
-                    const cube = new THREE.Mesh(geometry, material);
+            // Create entrance portal
+            createEntrancePortal() {
+                const portalGroup = new THREE.Group();
+                
+                // Create portal ring
+                const ringGeometry = new THREE.TorusGeometry(2, 0.3, 16, 32);
+                const ringMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xd4af37,
+                    emissive: 0xffcc77,
+                    emissiveIntensity: 0.3
+                });
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.position.y = 2;
+                portalGroup.add(ring);
+                
+                // Create portal energy effect
+                const portalGeometry = new THREE.CircleGeometry(1.7, 32);
+                const portalMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0xffffbb,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const portal = new THREE.Mesh(portalGeometry, portalMaterial);
+                portal.position.y = 2;
+                portalGroup.add(portal);
+                
+                portalGroup.position.set(0, 0, 14.9);
+                portalGroup.rotation.y = Math.PI;
+                this.scene.add(portalGroup);
+                
+                // Add portal light
+                const portalLight = new THREE.PointLight(0xffffcc, 1, 8);
+                portalLight.position.set(0, 2, 14);
+                this.scene.add(portalLight);
+                
+                // Add as interactive object
+                this.interactiveObjects.push({
+                    type: 'portal',
+                    object: portalGroup,
+                    position: new THREE.Vector3(0, 2, 14),
+                    radius: 3,
+                    interact: () => this.exitChamber()
+                });
+            }
+            
+            // Create instrument displays
+            createInstrumentDisplays() {
+                // Position instruments in a circle around the chamber
+                const instrumentsToCreate = [
+                    { id: 'lyre', name: 'Lyre', angle: 0 },
+                    { id: 'kithara', name: 'Kithara', angle: Math.PI / 3 },
+                    { id: 'aulos', name: 'Aulos', angle: 2 * Math.PI / 3 },
+                    { id: 'syrinx', name: 'Syrinx', angle: Math.PI },
+                    { id: 'tympanon', name: 'Tympanon', angle: 4 * Math.PI / 3 },
+                    { id: 'krotala', name: 'Krotala', angle: 5 * Math.PI / 3 }
+                ];
+                
+                instrumentsToCreate.forEach(instrument => {
+                    this.createInstrumentDisplay(instrument.id, instrument.name, instrument.angle);
+                });
+            }
+            
+            // Create an individual instrument display
+            createInstrumentDisplay(id, name, angle) {
+                const radius = 10; // Distance from center
+                
+                // Calculate position
+                const x = Math.sin(angle) * radius;
+                const z = Math.cos(angle) * radius;
+                
+                // Create display platform
+                const platformGeometry = new THREE.CylinderGeometry(1.5, 1.5, 0.5, 16);
+                const platformMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x444455,
+                    roughness: 0.5,
+                    metalness: 0.3
+                });
+                const platform = new THREE.Mesh(platformGeometry, platformMaterial);
+                platform.position.set(x, 0.25, z);
+                platform.castShadow = true;
+                platform.receiveShadow = true;
+                this.scene.add(platform);
+                
+                // Create instrument model based on its type
+                const instrumentGroup = new THREE.Group();
+                
+                switch(id) {
+                    case 'lyre':
+                        this.createLyreModel(instrumentGroup);
+                        break;
+                    case 'kithara':
+                        this.createKitharaModel(instrumentGroup);
+                        break;
+                    case 'aulos':
+                        this.createAulosModel(instrumentGroup);
+                        break;
+                    case 'syrinx':
+                        this.createSyrinxModel(instrumentGroup);
+                        break;
+                    case 'tympanon':
+                        this.createTympanonModel(instrumentGroup);
+                        break;
+                    case 'krotala':
+                        this.createKrotalaModel(instrumentGroup);
+                        break;
+                    default:
+                        // Create a placeholder cube if instrument not defined
+                        const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+                        const material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+                        const cube = new THREE.Mesh(geometry, material);
                         instrumentGroup.add(cube);
                 }
-            // Position the instrument group on the platform
-            instrumentGroup.position.copy(platform.position);
-            instrumentGroup.position.y = 1; // Raise above platform
-            
-            // Make instrument look toward center
-            instrumentGroup.lookAt(0, 1, 0);
-            
-            this.scene.add(instrumentGroup);
-            
-            // Add spotlight for the instrument
-            const spotlight = new THREE.SpotLight(0xffffcc, 1, 10, Math.PI / 6, 0.5, 1);
-            spotlight.position.set(x, 5, z);
-            spotlight.target = instrumentGroup;
-            this.scene.add(spotlight);
-            
-            // Add glowing aura around the instrument
-            const auraGeometry = new THREE.SphereGeometry(1.5, 16, 16);
-            const auraMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xffffbb,
-                transparent: true,
-                opacity: 0.15
-            });
-            const aura = new THREE.Mesh(auraGeometry, auraMaterial);
-            aura.position.copy(instrumentGroup.position);
-            this.scene.add(aura);
-            
-            // Add text for instrument name
-            const textGroup = new THREE.Group();
-            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            
-            // Simulate a text mesh since we're not using TextGeometry
-            const textPlane = new THREE.PlaneGeometry(2, 0.5);
-            const textMesh = new THREE.Mesh(textPlane, textMaterial);
-            textMesh.position.y = -0.5;
-            textGroup.add(textMesh);
-            
-            textGroup.position.set(x, 3, z);
-            textGroup.lookAt(0, 3, 0);
-            
-            this.scene.add(textGroup);
-            
-            // Add as interactive object
-            this.interactiveObjects.push({
-                type: 'instrument',
-                id: id,
-                object: instrumentGroup,
-                position: new THREE.Vector3(x, 1, z),
-                radius: 2.5,
-                interact: () => this.showInstrumentInfo(id)
-            });
-        }
-        
-        // Create lyre model
-        createLyreModel(group) {
-            // Create tortoise shell base (sound box)
-            const baseGeometry = new THREE.SphereGeometry(0.4, 16, 16);
-            baseGeometry.scale(1, 0.5, 1.2);
-            const baseMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x8B4513,
-                roughness: 0.8,
-                metalness: 0.2
-            });
-            const base = new THREE.Mesh(baseGeometry, baseMaterial);
-            base.rotation.x = Math.PI / 2;
-            group.add(base);
-            
-            // Create arms (horns)
-            const armGeometry = new THREE.CylinderGeometry(0.05, 0.07, 0.8, 8);
-            const armMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xf5deb3,
-                roughness: 0.7,
-                metalness: 0.1
-            });
-            
-            // Left arm
-            const leftArm = new THREE.Mesh(armGeometry, armMaterial);
-            leftArm.position.set(-0.25, 0.4, 0);
-            leftArm.rotation.z = -Math.PI / 8;
-            group.add(leftArm);
-            
-            // Right arm
-            const rightArm = new THREE.Mesh(armGeometry, armMaterial);
-            rightArm.position.set(0.25, 0.4, 0);
-            rightArm.rotation.z = Math.PI / 8;
-            group.add(rightArm);
-            
-            // Create crossbar
-            const crossbarGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.6, 8);
-            const crossbar = new THREE.Mesh(crossbarGeometry, armMaterial);
-            crossbar.position.y = 0.8;
-            crossbar.rotation.x = Math.PI / 2;
-            group.add(crossbar);
-            
-            // Create strings
-            const stringMaterial = new THREE.LineBasicMaterial({ color: 0xdddddd });
-            
-            for (let i = 0; i < 7; i++) {
-                const x = -0.27 + i * 0.09;
                 
-                const stringGeometry = new THREE.BufferGeometry().setFromPoints([
-                    new THREE.Vector3(x, 0.8, 0),
-                    new THREE.Vector3(x, -0.2, 0)
-                ]);
+                // Position the instrument group on the platform
+                instrumentGroup.position.copy(platform.position);
+                instrumentGroup.position.y = 1; // Raise above platform
                 
-                const string = new THREE.Line(stringGeometry, stringMaterial);
-                group.add(string);
-            }
-        }
-        
-        // Create kithara model
-        createKitharaModel(group) {
-            // Create wooden sound box
-            const boxGeometry = new THREE.BoxGeometry(0.8, 0.6, 0.2);
-            const boxMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xCD853F,
-                roughness: 0.8,
-                metalness: 0.1
-            });
-            const box = new THREE.Mesh(boxGeometry, boxMaterial);
-            box.position.y = -0.3;
-            group.add(box);
-            
-            // Create arms
-            const armGeometry = new THREE.CylinderGeometry(0.05, 0.08, 1.2, 8);
-            const armMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x8B4513,
-                roughness: 0.8,
-                metalness: 0.2
-            });
-            
-            // Left arm
-            const leftArm = new THREE.Mesh(armGeometry, armMaterial);
-            leftArm.position.set(-0.35, 0.3, 0);
-            leftArm.rotation.z = -Math.PI / 12;
-            group.add(leftArm);
-            
-            // Right arm
-            const rightArm = new THREE.Mesh(armGeometry, armMaterial);
-            rightArm.position.set(0.35, 0.3, 0);
-            rightArm.rotation.z = Math.PI / 12;
-            group.add(rightArm);
-            
-            // Create crossbar
-            const crossbarGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.9, 8);
-            const crossbar = new THREE.Mesh(crossbarGeometry, armMaterial);
-            crossbar.position.y = 0.9;
-            crossbar.rotation.x = Math.PI / 2;
-            group.add(crossbar);
-            
-            // Create strings
-            const stringMaterial = new THREE.LineBasicMaterial({ color: 0xdddddd });
-            
-            for (let i = 0; i < 7; i++) {
-                const x = -0.3 + i * 0.1;
+                // Make instrument look toward center
+                instrumentGroup.lookAt(0, 1, 0);
                 
-                const stringGeometry = new THREE.BufferGeometry().setFromPoints([
-                    new THREE.Vector3(x, 0.9, 0),
-                    new THREE.Vector3(x, -0.6, 0)
-                ]);
+                this.scene.add(instrumentGroup);
                 
-                const string = new THREE.Line(stringGeometry, stringMaterial);
-                group.add(string);
-            }
-            
-            // Scale up the kithara compared to the lyre
-            group.scale.set(1.5, 1.5, 1.5);
-        }
-        
-        // Create aulos model
-        createAulosModel(group) {
-            // Create pipes
-            const pipeGeometry = new THREE.CylinderGeometry(0.03, 0.04, 0.8, 8);
-            const pipeMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xDEB887,
-                roughness: 0.7,
-                metalness: 0.1
-            });
-            
-            // Left pipe
-            const leftPipe = new THREE.Mesh(pipeGeometry, pipeMaterial);
-            leftPipe.position.set(-0.08, 0, 0);
-            leftPipe.rotation.x = -Math.PI / 8;
-            group.add(leftPipe);
-            
-            // Right pipe
-            const rightPipe = new THREE.Mesh(pipeGeometry, pipeMaterial);
-            rightPipe.position.set(0.08, 0, 0);
-            rightPipe.rotation.x = -Math.PI / 8;
-            group.add(rightPipe);
-            
-            // Create reed mouthpieces
-            const reedGeometry = new THREE.ConeGeometry(0.02, 0.1, 8);
-            const reedMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
-            
-            // Left reed
-            const leftReed = new THREE.Mesh(reedGeometry, reedMaterial);
-            leftReed.position.set(-0.08, 0.45, -0.1);
-            leftReed.rotation.x = Math.PI / 2;
-            group.add(leftReed);
-            
-            // Right reed
-            const rightReed = new THREE.Mesh(reedGeometry, reedMaterial);
-            rightReed.position.set(0.08, 0.45, -0.1);
-            rightReed.rotation.x = Math.PI / 2;
-            group.add(rightReed);
-            
-            // Create finger holes
-            const holeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-            
-            // Holes for left pipe
-            for (let i = 0; i < 5; i++) {
-                const holeGeometry = new THREE.CircleGeometry(0.01, 8);
-                const hole = new THREE.Mesh(holeGeometry, holeMaterial);
-                hole.position.set(-0.08, 0.3 - i * 0.13, 0.04);
-                hole.rotation.y = Math.PI;
-                group.add(hole);
-            }
-            
-            // Holes for right pipe
-            for (let i = 0; i < 5; i++) {
-                const holeGeometry = new THREE.CircleGeometry(0.01, 8);
-                const hole = new THREE.Mesh(holeGeometry, holeMaterial);
-                hole.position.set(0.08, 0.3 - i * 0.13, 0.04);
-                hole.rotation.y = Math.PI;
-                group.add(hole);
-            }
-            
-            // Scale up for better visibility
-            group.scale.set(2, 2, 2);
-        }
-        
-        // Create syrinx (pan flute) model
-        createSyrinxModel(group) {
-            // Create pipes of different lengths
-            const pipeMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x8B4513,
-                roughness: 0.9,
-                metalness: 0.1
-            });
-            
-            for (let i = 0; i < 7; i++) {
-                const height = 0.7 - i * 0.07;
-                const pipeGeometry = new THREE.CylinderGeometry(0.03, 0.03, height, 8);
-                const pipe = new THREE.Mesh(pipeGeometry, pipeMaterial);
-                pipe.position.set(-0.18 + i * 0.06, height * 0.45, 0);
-                group.add(pipe);
+                // Add spotlight for the instrument
+                const spotlight = new THREE.SpotLight(0xffffcc, 1, 10, Math.PI / 6, 0.5, 1);
+                spotlight.position.set(x, 5, z);
+                spotlight.target = instrumentGroup;
+                this.scene.add(spotlight);
                 
-                // Create pipe openings
-                const openingGeometry = new THREE.CircleGeometry(0.02, 8);
-                const openingMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-                const opening = new THREE.Mesh(openingGeometry, openingMaterial);
-                opening.position.set(-0.18 + i * 0.06, height * 0.9 + 0.03, 0);
-                opening.rotation.x = -Math.PI / 2;
-                group.add(opening);
-            }
-            
-            // Create binding material
-            const bindingGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.02);
-            const bindingMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xDEB887,
-                roughness: 0.9,
-                metalness: 0.1
-            });
-            const binding = new THREE.Mesh(bindingGeometry, bindingMaterial);
-            binding.position.z = -0.03;
-            group.add(binding);
-            
-            // Scale up for better visibility
-            group.scale.set(1.5, 1.5, 1.5);
-        }
-        
-        // Create tympanon (frame drum) model
-        createTympanonModel(group) {
-            // Create frame
-            const frameGeometry = new THREE.TorusGeometry(0.4, 0.05, 8, 32);
-            const frameMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x8B4513,
-                roughness: 0.8,
-                metalness: 0.1
-            });
-            const frame = new THREE.Mesh(frameGeometry, frameMaterial);
-            group.add(frame);
-            
-            // Create drumhead
-            const drumheadGeometry = new THREE.CircleGeometry(0.4, 32);
-            const drumheadMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xF5F5DC,
-                roughness: 0.9,
-                metalness: 0.0
-            });
-            const drumhead = new THREE.Mesh(drumheadGeometry, drumheadMaterial);
-            drumhead.position.z = -0.03;
-            group.add(drumhead);
-            
-            // Create handle
-            const handleGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.3, 8);
-            const handle = new THREE.Mesh(handleGeometry, frameMaterial);
-            handle.position.set(0, -0.5, 0);
-            handle.rotation.x = Math.PI / 2;
-            group.add(handle);
-            
-            // Scale up for better visibility
-            group.scale.set(2, 2, 2);
-        }
-        
-        // Create krotala (clappers) model
-        createKrotalaModel(group) {
-            // Create clapper pieces
-            const clapperGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.3, 8);
-            clapperGeometry.translate(0, 0.15, 0);
-            const clapperMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x8B4513,
-                roughness: 0.8,
-                metalness: 0.1
-            });
-            
-            // Left pair
-            const leftClapper1 = new THREE.Mesh(clapperGeometry, clapperMaterial);
-            leftClapper1.position.set(-0.2, 0, 0.05);
-            leftClapper1.rotation.x = -Math.PI / 4;
-            group.add(leftClapper1);
-            
-            const leftClapper2 = new THREE.Mesh(clapperGeometry, clapperMaterial);
-            leftClapper2.position.set(-0.2, 0, -0.05);
-            leftClapper2.rotation.x = Math.PI / 4;
-            group.add(leftClapper2);
-            
-            // Right pair
-            const rightClapper1 = new THREE.Mesh(clapperGeometry, clapperMaterial);
-            rightClapper1.position.set(0.2, 0, 0.05);
-            rightClapper1.rotation.x = -Math.PI / 4;
-            group.add(rightClapper1);
-            
-            const rightClapper2 = new THREE.Mesh(clapperGeometry, clapperMaterial);
-            rightClapper2.position.set(0.2, 0, -0.05);
-            rightClapper2.rotation.x = Math.PI / 4;
-            group.add(rightClapper2);
-            
-            // Scale up for better visibility
-            group.scale.set(2, 2, 2);
-        }
-        
-        // Start the cutscene
-        startCutscene() {
-            this.setupCutscene([
-                {
-                    subtitle: "You enter the sacred Chamber of Ancient Instruments...",
-                    cameraPosition: new THREE.Vector3(0, 5, 15),
-                    cameraLookAt: new THREE.Vector3(0, 0, 0),
-                    duration: 4000
-                },
-                {
-                    cameraPosition: new THREE.Vector3(10, 3, 0),
-                    cameraLookAt: new THREE.Vector3(0, 1, 0),
-                    subtitle: "The chamber glows with a mystical light, illuminating the instruments that once filled ancient Greece with divine music.",
-                    duration: 5000
-                },
-                {
-                    cameraPosition: new THREE.Vector3(-10, 3, -8),
-                    cameraLookAt: new THREE.Vector3(0, 1, 0),
-                    subtitle: "Each instrument holds the memory of the melodies that connected mortals to the gods.",
-                    duration: 4000
-                },
-                {
-                    cameraPosition: new THREE.Vector3(0, 3, -5),
-                    cameraLookAt: new THREE.Vector3(0, 1, 0),
-                    subtitle: "Approach each display to learn about these sacred instruments and their role in ancient Greek music.",
-                    duration: 4000
-                }
-            ]);
-        }
-        
-        // Set up cutscene sequence
-        setupCutscene(steps) {
-            this.cutsceneSteps = steps;
-            this.currentCutsceneStep = 0;
-            this.inCutscene = true;
-            this.playerCanMove = false;
-            
-            // Start the first step of cutscene
-            if (this.cutsceneSteps.length > 0) {
-                this.executeCutsceneStep();
-            }
-        }
-        
-        // Execute current cutscene step
-        executeCutsceneStep() {
-            if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
-                this.endCutscene();
-                return;
-            }
-            
-            const step = this.cutsceneSteps[this.currentCutsceneStep];
-            
-            // Handle camera movement
-            if (step.cameraPosition) {
-                this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
-            }
-            
-            // Handle subtitle
-            if (step.subtitle) {
-                this.showSubtitle(step.subtitle, step.duration || 2000);
-            }
-            
-            // Wait for the step duration and then move to next step
-            setTimeout(() => {
-                this.currentCutsceneStep++;
-                this.executeCutsceneStep();
-            }, step.duration || 2000);
-        }
-        
-        // End cutscene and allow player movement
-        endCutscene() {
-            this.inCutscene = false;
-            this.playerCanMove = true;
-            this.hideSubtitle();
-            this.showInteractionPrompt("Use WASD to move around the chamber. Press E to interact with instruments.");
-            
-            // Set player camera
-            this.setPlayerCamera();
-        }
-        
-        // Show instrument information
-        showInstrumentInfo(instrumentId) {
-            if (this.showingInfo) return;
-            
-            // Get instrument info
-            const info = this.instrumentInfo[instrumentId];
-            if (!info) return;
-            
-            this.showingInfo = true;
-            this.playerCanMove = false;
-            
-            // Set info panel content
-            this.instrumentName.textContent = info.name;
-            this.instrumentDescription.innerHTML = info.description;
-            
-            // Show info panel
-            this.infoPanel.style.display = 'block';
-            
-            // Play instrument sound if available
-            this.playInstrumentSound(instrumentId);
-        }
-        
-        // Close info panel
-        closeInfoPanel() {
-            this.showingInfo = false;
-            this.infoPanel.style.display = 'none';
-            this.playerCanMove = true;
-        }
-        
-        // Play instrument sound (placeholder)
-        playInstrumentSound(instrumentId) {
-            console.log(`Playing sound for ${instrumentId}`);
-            // In a full implementation, this would play an actual sound file
-        }
-        
-        // Exit the chamber
-        exitChamber() {
-            if (!this.transitioningToExit) {
-                this.transitioningToExit = true;
+                // Add glowing aura around the instrument
+                const auraGeometry = new THREE.SphereGeometry(1.5, 16, 16);
+                const auraMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0xffffbb,
+                    transparent: true,
+                    opacity: 0.15
+                });
+                const aura = new THREE.Mesh(auraGeometry, auraMaterial);
+                aura.position.copy(instrumentGroup.position);
+                this.scene.add(aura);
                 
-                this.showSubtitle("Your journey through the musical history of ancient Greece is complete...");
+                // Add text for instrument name
+                const textGroup = new THREE.Group();
+                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
                 
-                setTimeout(() => {
-                    this.fadeOut(() => {
-                        // Show final message before ending
-                        this.showFinalMessage();
-                    });
-                }, 3000);
-            }
-        }
-        
-        // Show final message
-        showFinalMessage() {
-            // Create a simple ending screen
-            const endingDiv = document.createElement('div');
-            endingDiv.style.position = 'absolute';
-            endingDiv.style.top = '0';
-            endingDiv.style.left = '0';
-            endingDiv.style.width = '100%';
-            endingDiv.style.height = '100%';
-            endingDiv.style.backgroundColor = 'black';
-            endingDiv.style.color = 'white';
-            endingDiv.style.display = 'flex';
-            endingDiv.style.flexDirection = 'column';
-            endingDiv.style.justifyContent = 'center';
-            endingDiv.style.alignItems = 'center';
-            endingDiv.style.padding = '20px';
-            endingDiv.style.textAlign = 'center';
-            
-            endingDiv.innerHTML = `
-                <h1 style="color: #f5deb3; font-size: 36px; margin-bottom: 20px;">Journey Complete</h1>
-                <p style="font-size: 20px; margin-bottom: 40px; max-width: 800px; line-height: 1.6;">
-                    You have discovered the musical heritage of ancient Greece - instruments that once connected
-                    mortals to the divine through their celestial melodies. From the lyre of Apollo to the aulos of
-                    Dionysus, these instruments continue to inspire us today.
-                </p>
-                <button id="restart-button" style="background-color: #8b5a2b; color: white; border: none; padding: 12px 24px; font-size: 18px; cursor: pointer; border-radius: 4px;">
-                    Return to Start
-                </button>
-            `;
-            
-            document.body.appendChild(endingDiv);
-            
-            // Add event listener to restart button
-            document.getElementById('restart-button').addEventListener('click', () => {
-                window.location.href = 'opening-scene.html';
-            });
-        }
-        
-        // Set camera to player perspective
-        setPlayerCamera() {
-            this.camera.position.set(
-                this.player.position.x,
-                this.player.position.y + 0.5,
-                this.player.position.z + 2
-            );
-            this.camera.lookAt(
-                this.player.position.x,
-                this.player.position.y + 0.5,
-                0
-            );
-        }
-        
-        // Move camera to a position over time
-        moveCameraTo(position, lookAt, duration) {
-            const startPosition = this.camera.position.clone();
-            const startTime = Date.now();
-            
-            const animate = () => {
-                const now = Date.now();
-                const progress = Math.min((now - startTime) / duration, 1);
+                // Simulate a text mesh since we're not using TextGeometry
+                const textPlane = new THREE.PlaneGeometry(2, 0.5);
+                const textMesh = new THREE.Mesh(textPlane, textMaterial);
+                textMesh.position.y = -0.5;
+                textGroup.add(textMesh);
                 
-                // Interpolate camera position
-                this.camera.position.lerpVectors(startPosition, position, progress);
+                textGroup.position.set(x, 3, z);
+                textGroup.lookAt(0, 3, 0);
                 
-                // Look at target
-                if (lookAt) {
-                    this.camera.lookAt(lookAt);
-                }
+                this.scene.add(textGroup);
                 
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                }
-            };
-            
-            animate();
-        }
-        
-        // Fade in from black
-        fadeIn() {
-            this.fadeOverlay.style.opacity = '0';
-        }
-        
-        // Fade out to black
-        fadeOut(callback) {
-            this.fadeOverlay.style.opacity = '1';
-            
-            setTimeout(() => {
-                if (callback) callback();
-            }, 2000);
-        }
-        
-        // Show subtitle text
-        showSubtitle(text, duration) {
-            this.subtitle.textContent = text;
-            this.subtitle.style.opacity = '1';
-            
-            if (duration) {
-                setTimeout(() => {
-                    this.hideSubtitle();
-                }, duration);
-            }
-        }
-        
-        // Hide subtitle
-        hideSubtitle() {
-            this.subtitle.style.opacity = '0';
-        }
-        
-        // Show interaction prompt
-        showInteractionPrompt(text) {
-            this.interactionPrompt.textContent = text;
-            this.interactionPrompt.style.opacity = '1';
-            
-            setTimeout(() => {
-                this.interactionPrompt.style.opacity = '0';
-            }, 5000);
-        }
-        
-        // Animation loop
-        animate() {
-            requestAnimationFrame(this.animate);
-            
-            // Handle player movement if enabled
-            if (this.playerCanMove) {
-                this.updatePlayerMovement();
-                this.checkInteractions();
+                // Add as interactive object
+                this.interactiveObjects.push({
+                    type: 'instrument',
+                    id: id,
+                    object: instrumentGroup,
+                    position: new THREE.Vector3(x, 1, z),
+                    radius: 2.5,
+                    interact: () => this.showInstrumentInfo(id)
+                });
             }
             
-            // Animate glowing auras
-            this.animateAuras();
-            
-            this.renderer.render(this.scene, this.camera);
-        }
-        
-        // Animate glowing auras around instruments
-        animateAuras() {
-            const time = Date.now() * 0.001;
-            
-            this.scene.children.forEach(child => {
-                if (child.geometry && child.geometry.type === 'SphereGeometry' && child.material.transparent) {
-                    child.material.opacity = 0.1 + 0.05 * Math.sin(time * 2);
-                    child.scale.setScalar(1 + 0.05 * Math.sin(time * 3));
-                }
-            });
-        }
-        
-        // Update player movement based on input
-        // Update player movement based on input
-updatePlayerMovement() {
-    const playerSpeed = this.moveSpeed;
-    
-    // Calculate forward/backward movement
-    if (this.moveForward) {
-        this.player.position.z -= playerSpeed;
-    }
-    if (this.moveBackward) {
-        this.player.position.z += playerSpeed;
-    }
-    
-    // Calculate left/right movement
-    if (this.moveLeft) {
-        this.player.position.x -= playerSpeed;
-    }
-    if (this.moveRight) {
-        this.player.position.x += playerSpeed;
-    }
-    
-    // Update camera position to follow player
-    this.camera.position.set(
-        this.player.position.x,
-        this.player.position.y + 0.5,
-        this.player.position.z + 2
-    );
-    
-    // FIXED: Instead of looking at the center, look in the direction of movement
-    // Look in the direction the player is facing (ahead of player, not toward center)
-    this.camera.lookAt(
-        this.player.position.x,
-        this.player.position.y + 0.5,
-        this.player.position.z - 10  // Look ahead of player, not center
-    );
-    
-    // Limit player movement to chamber area
-    const maxRadius = 14;
-    const playerDistFromCenter = Math.sqrt(
-        this.player.position.x * this.player.position.x + 
-        this.player.position.z * this.player.position.z
-    );
-    
-    if (playerDistFromCenter > maxRadius) {
-        const angle = Math.atan2(this.player.position.z, this.player.position.x);
-        this.player.position.x = Math.cos(angle) * maxRadius;
-        this.player.position.z = Math.sin(angle) * maxRadius;
-    }
-}
-        
-        // Check for interactions with objects
-        checkInteractions() {
-            for (const obj of this.interactiveObjects) {
-                const distance = this.player.position.distanceTo(obj.position);
+            // Create models for instruments
+            createLyreModel(group) {
+                // Create tortoise shell base (sound box)
+                const baseGeometry = new THREE.SphereGeometry(0.4, 16, 16);
+                baseGeometry.scale(1, 0.5, 1.2);
+                const baseMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x8B4513,
+                    roughness: 0.8,
+                    metalness: 0.2
+                });
+                const base = new THREE.Mesh(baseGeometry, baseMaterial);
+                base.rotation.x = Math.PI / 2;
+                group.add(base);
                 
-                if (distance <= obj.radius) {
-                    // Show interaction prompt
-                    this.showInteractionPrompt(`Press E to interact with ${obj.type === 'portal' ? 'Portal' : obj.id}`);
-                    break;
+                // Create arms (horns)
+                const armGeometry = new THREE.CylinderGeometry(0.05, 0.07, 0.8, 8);
+                const armMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xf5deb3,
+                    roughness: 0.7,
+                    metalness: 0.1
+                });
+                
+                // Left arm
+                const leftArm = new THREE.Mesh(armGeometry, armMaterial);
+                leftArm.position.set(-0.25, 0.4, 0);
+                leftArm.rotation.z = -Math.PI / 8;
+                group.add(leftArm);
+                
+                // Right arm
+                const rightArm = new THREE.Mesh(armGeometry, armMaterial);
+                rightArm.position.set(0.25, 0.4, 0);
+                rightArm.rotation.z = Math.PI / 8;
+                group.add(rightArm);
+                
+                // Create crossbar
+                const crossbarGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.6, 8);
+                const crossbar = new THREE.Mesh(crossbarGeometry, armMaterial);
+                crossbar.position.y = 0.8;
+                crossbar.rotation.x = Math.PI / 2;
+                group.add(crossbar);
+                
+                // Create strings
+                const stringMaterial = new THREE.LineBasicMaterial({ color: 0xdddddd });
+                
+                for (let i = 0; i < 7; i++) {
+                    const x = -0.27 + i * 0.09;
+                    
+                    const stringGeometry = new THREE.BufferGeometry().setFromPoints([
+                        new THREE.Vector3(x, 0.8, 0),
+                        new THREE.Vector3(x, -0.2, 0)
+                    ]);
+                    
+                    const string = new THREE.Line(stringGeometry, stringMaterial);
+                    group.add(string);
                 }
             }
-        }
-        
-        // Handle window resize
-        onWindowResize() {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
-            this.camera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-        
-        // Handle keydown events
-        onKeyDown(event) {
-            switch (event.code) {
-                case 'KeyW':
-                case 'ArrowUp':
-                    this.moveForward = true;
-                    break;
+            
+            createKitharaModel(group) {
+                // Create wooden sound box
+                const boxGeometry = new THREE.BoxGeometry(0.8, 0.6, 0.2);
+                const boxMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xCD853F,
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                const box = new THREE.Mesh(boxGeometry, boxMaterial);
+                box.position.y = -0.3;
+                group.add(box);
+                
+                // Create arms
+                const armGeometry = new THREE.CylinderGeometry(0.05, 0.08, 1.2, 8);
+                const armMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x8B4513,
+                    roughness: 0.8,
+                    metalness: 0.2
+                });
+                
+                // Left arm
+                const leftArm = new THREE.Mesh(armGeometry, armMaterial);
+                leftArm.position.set(-0.35, 0.3, 0);
+                leftArm.rotation.z = -Math.PI / 12;
+                group.add(leftArm);
+                
+                // Right arm
+                const rightArm = new THREE.Mesh(armGeometry, armMaterial);
+                rightArm.position.set(0.35, 0.3, 0);
+                rightArm.rotation.z = Math.PI / 12;
+                group.add(rightArm);
+                
+                // Create crossbar
+                const crossbarGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.9, 8);
+                const crossbar = new THREE.Mesh(crossbarGeometry, armMaterial);
+                crossbar.position.y = 0.9;
+                crossbar.rotation.x = Math.PI / 2;
+                group.add(crossbar);
+                
+                // Create strings
+                const stringMaterial = new THREE.LineBasicMaterial({ color: 0xdddddd });
+                
+                for (let i = 0; i < 7; i++) {
+                    const x = -0.3 + i * 0.1;
                     
-                case 'KeyS':
-                case 'ArrowDown':
-                    this.moveBackward = true;
-                    break;
+                    const stringGeometry = new THREE.BufferGeometry().setFromPoints([
+                        new THREE.Vector3(x, 0.9, 0),
+                        new THREE.Vector3(x, -0.6, 0)
+                    ]);
                     
-                case 'KeyA':
-                case 'ArrowLeft':
-                    this.moveLeft = true;
-                    break;
+                    const string = new THREE.Line(stringGeometry, stringMaterial);
+                    group.add(string);
+                }
+                
+                // Scale up the kithara compared to the lyre
+                group.scale.set(1.5, 1.5, 1.5);
+            }
+            
+            createAulosModel(group) {
+                // Create pipes
+                const pipeGeometry = new THREE.CylinderGeometry(0.03, 0.04, 0.8, 8);
+                const pipeMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xDEB887,
+                    roughness: 0.7,
+                    metalness: 0.1
+                });
+                
+                // Left pipe
+                const leftPipe = new THREE.Mesh(pipeGeometry, pipeMaterial);
+                leftPipe.position.set(-0.08, 0, 0);
+                leftPipe.rotation.x = -Math.PI / 8;
+                group.add(leftPipe);
+                
+                // Right pipe
+                const rightPipe = new THREE.Mesh(pipeGeometry, pipeMaterial);
+                rightPipe.position.set(0.08, 0, 0);
+                rightPipe.rotation.x = -Math.PI / 8;
+                group.add(rightPipe);
+                
+                // Create reed mouthpieces
+                const reedGeometry = new THREE.ConeGeometry(0.02, 0.1, 8);
+                const reedMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+                
+                // Left reed
+                const leftReed = new THREE.Mesh(reedGeometry, reedMaterial);
+                leftReed.position.set(-0.08, 0.45, -0.1);
+                leftReed.rotation.x = Math.PI / 2;
+                group.add(leftReed);
+                
+                // Right reed
+                const rightReed = new THREE.Mesh(reedGeometry, reedMaterial);
+                rightReed.position.set(0.08, 0.45, -0.1);
+                rightReed.rotation.x = Math.PI / 2;
+                group.add(rightReed);
+                
+                // Create finger holes
+                const holeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                
+                // Holes for left pipe
+                for (let i = 0; i < 5; i++) {
+                    const holeGeometry = new THREE.CircleGeometry(0.01, 8);
+                    const hole = new THREE.Mesh(holeGeometry, holeMaterial);
+                    hole.position.set(-0.08, 0.3 - i * 0.13, 0.04);
+                    hole.rotation.y = Math.PI;
+                    group.add(hole);
+                }
+                
+                // Holes for right pipe
+                for (let i = 0; i < 5; i++) {
+                    const holeGeometry = new THREE.CircleGeometry(0.01, 8);
+                    const hole = new THREE.Mesh(holeGeometry, holeMaterial);
+                    hole.position.set(0.08, 0.3 - i * 0.13, 0.04);
+                    hole.rotation.y = Math.PI;
+                    group.add(hole);
+                }
+                
+                // Scale up for better visibility
+                group.scale.set(2, 2, 2);
+            }
+            
+            createSyrinxModel(group) {
+                // Create pipes of different lengths
+                const pipeMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x8B4513,
+                    roughness: 0.9,
+                    metalness: 0.1
+                });
+                
+                for (let i = 0; i < 7; i++) {
+                    const height = 0.7 - i * 0.07;
+                    const pipeGeometry = new THREE.CylinderGeometry(0.03, 0.03, height, 8);
+                    const pipe = new THREE.Mesh(pipeGeometry, pipeMaterial);
+                    pipe.position.set(-0.18 + i * 0.06, height * 0.45, 0);
+                    group.add(pipe);
                     
-                case 'KeyD':
-                case 'ArrowRight':
-                    this.moveRight = true;
-                    break;
-                    
-                case 'KeyE':
-                    this.interact();
-                    break;
-                    
-                case 'Space':
-                    // Skip cutscene if in one
-                    if (this.inCutscene) {
-                        this.endCutscene();
-                    } else if (this.showingInfo) {
-                        this.closeInfoPanel();
+                    // Create pipe openings
+                    const openingGeometry = new THREE.CircleGeometry(0.02, 8);
+                    const openingMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+                    const opening = new THREE.Mesh(openingGeometry, openingMaterial);
+                    opening.position.set(-0.18 + i * 0.06, height * 0.9 + 0.03, 0);
+                    opening.rotation.x = -Math.PI / 2;
+                    group.add(opening);
+                }
+                
+                // Create binding material
+                const bindingGeometry = new THREE.BoxGeometry(0.5, 0.7, 0.02);
+                const bindingMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xDEB887,
+                    roughness: 0.9,
+                    metalness: 0.1
+                });
+                const binding = new THREE.Mesh(bindingGeometry, bindingMaterial);
+                binding.position.z = -0.03;
+                group.add(binding);
+                
+                // Scale up for better visibility
+                group.scale.set(1.5, 1.5, 1.5);
+            }
+            
+            createTympanonModel(group) {
+                // Create frame
+                const frameGeometry = new THREE.TorusGeometry(0.4, 0.05, 8, 32);
+                const frameMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x8B4513,
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+                group.add(frame);
+                
+                // Create drumhead
+                const drumheadGeometry = new THREE.CircleGeometry(0.4, 32);
+                const drumheadMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0xF5F5DC,
+                    roughness: 0.9,
+                    metalness: 0.0
+                });
+                const drumhead = new THREE.Mesh(drumheadGeometry, drumheadMaterial);
+                drumhead.position.z = -0.03;
+                group.add(drumhead);
+                
+                // Create handle
+                const handleGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.3, 8);
+                const handle = new THREE.Mesh(handleGeometry, frameMaterial);
+                handle.position.set(0, -0.5, 0);
+                handle.rotation.x = Math.PI / 2;
+                group.add(handle);
+                
+                // Scale up for better visibility
+                group.scale.set(2, 2, 2);
+            }
+            
+            createKrotalaModel(group) {
+                // Create clapper pieces
+                const clapperGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.3, 8);
+                clapperGeometry.translate(0, 0.15, 0);
+                const clapperMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x8B4513,
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                
+                // Left pair
+                const leftClapper1 = new THREE.Mesh(clapperGeometry, clapperMaterial);
+                leftClapper1.position.set(-0.2, 0, 0.05);
+                leftClapper1.rotation.x = -Math.PI / 4;
+                group.add(leftClapper1);
+                
+                const leftClapper2 = new THREE.Mesh(clapperGeometry, clapperMaterial);
+                leftClapper2.position.set(-0.2, 0, -0.05);
+                leftClapper2.rotation.x = Math.PI / 4;
+                group.add(leftClapper2);
+                
+                // Right pair
+                const rightClapper1 = new THREE.Mesh(clapperGeometry, clapperMaterial);
+                rightClapper1.position.set(0.2, 0, 0.05);
+                rightClapper1.rotation.x = -Math.PI / 4;
+                group.add(rightClapper1);
+                
+                const rightClapper2 = new THREE.Mesh(clapperGeometry, clapperMaterial);
+                rightClapper2.position.set(0.2, 0, -0.05);
+                rightClapper2.rotation.x = Math.PI / 4;
+                group.add(rightClapper2);
+                
+                // Scale up for better visibility
+                group.scale.set(2, 2, 2);
+            }    
+            // Start the cutscene
+            startCutscene() {
+                this.setupCutscene([
+                    {
+                        subtitle: "You enter the sacred Chamber of Ancient Instruments...",
+                        cameraPosition: new THREE.Vector3(0, 5, 15),
+                        cameraLookAt: new THREE.Vector3(0, 0, 0),
+                        duration: 4000
+                    },
+                    {
+                        cameraPosition: new THREE.Vector3(10, 3, 0),
+                        cameraLookAt: new THREE.Vector3(0, 1, 0),
+                        subtitle: "The chamber glows with a mystical light, illuminating the instruments that once filled ancient Greece with divine music.",
+                        duration: 5000
+                    },
+                    {
+                        cameraPosition: new THREE.Vector3(-10, 3, -8),
+                        cameraLookAt: new THREE.Vector3(0, 1, 0),
+                        subtitle: "Each instrument holds the memory of the melodies that connected mortals to the gods.",
+                        duration: 4000
+                    },
+                    {
+                        cameraPosition: new THREE.Vector3(0, 3, -5),
+                        cameraLookAt: new THREE.Vector3(0, 1, 0),
+                        subtitle: "Approach each display to learn about these sacred instruments and their role in ancient Greek music.",
+                        duration: 4000
                     }
-                    break;
+                ]);
             }
-        }
-        
-        // Handle keyup events
-        onKeyUp(event) {
-            switch (event.code) {
-                case 'KeyW':
-                case 'ArrowUp':
-                    this.moveForward = false;
-                    break;
-                    
-                case 'KeyS':
-                case 'ArrowDown':
-                    this.moveBackward = false;
-                    break;
-                    
-                case 'KeyA':
-                case 'ArrowLeft':
-                    this.moveLeft = false;
-                    break;
-                    
-                case 'KeyD':
-                case 'ArrowRight':
-                    this.moveRight = false;
-                    break;
-            }
-        }
-        
-        // Interact with nearest object
-        interact() {
-            if (this.inCutscene || this.showingInfo) return;
             
-            let closestObj = null;
-            let closestDistance = Infinity;
-            
-            for (const obj of this.interactiveObjects) {
-                const distance = this.player.position.distanceTo(obj.position);
+            // Set up cutscene sequence
+            setupCutscene(steps) {
+                this.cutsceneSteps = steps;
+                this.currentCutsceneStep = 0;
+                this.inCutscene = true;
+                this.playerCanMove = false;
                 
-                if (distance <= obj.radius && distance < closestDistance) {
+                // Start the first step of cutscene
+                if (this.cutsceneSteps.length > 0) {
+                    this.executeCutsceneStep();
+                }
+            }
+            
+            // Execute current cutscene step
+            executeCutsceneStep() {
+                if (this.currentCutsceneStep >= this.cutsceneSteps.length) {
+                    this.endCutscene();
+                    return;
+                }
+                
+                const step = this.cutsceneSteps[this.currentCutsceneStep];
+                
+                // Handle camera movement
+                if (step.cameraPosition) {
+                    this.moveCameraTo(step.cameraPosition, step.cameraLookAt, step.duration || 2000);
+                }
+                
+                // Handle subtitle
+                if (step.subtitle) {
+                    this.showSubtitle(step.subtitle, step.duration || 2000);
+                }
+                
+                // Wait for the step duration and then move to next step
+                setTimeout(() => {
+                    this.currentCutsceneStep++;
+                    this.executeCutsceneStep();
+                }, step.duration || 2000);
+            }
+            
+            // End cutscene and allow player movement
+            endCutscene() {
+                this.inCutscene = false;
+                this.playerCanMove = true;
+                this.hideSubtitle();
+                this.showInteractionPrompt("Use WASD to move around the chamber. Press E to interact with instruments.");
+                
+                // Set player camera
+                this.setPlayerCamera();
+            }
+            
+            // Show instrument information with image
+            showInstrumentInfo(instrumentId) {
+                if (this.showingInfo) return;
+                
+                // Get instrument info
+                const info = this.instrumentInfo[instrumentId];
+                if (!info) return;
+                
+                this.showingInfo = true;
+                this.playerCanMove = false;
+                
+                // Set info panel content
+                this.instrumentName.textContent = info.name;
+                
+                // Create HTML with image and text
+                let htmlContent = '';
+                
+                // Add instrument image if available
+                if (info.imagePath) {
+                    htmlContent += `
+                        <div class="instrument-image-container">
+                            <img class="instrument-image" src="${info.imagePath}" alt="${info.name}">
+                            <div class="image-caption">${info.imageCaption || ''}</div>
+                        </div>
+                    `;
+                }
+                
+                // Add description text
+                htmlContent += info.description;
+                
+                // Set the content
+                this.instrumentDescription.innerHTML = htmlContent;
+                
+                // Show info panel
+                this.infoPanel.style.display = 'block';
+                
+                // Play instrument sound if available
+                this.playInstrumentSound(instrumentId);
+            }
+            
+            // Close info panel
+            closeInfoPanel() {
+                this.showingInfo = false;
+                this.infoPanel.style.display = 'none';
+                this.playerCanMove = true;
+            }
+            
+            // Play instrument sound (placeholder)
+            playInstrumentSound(instrumentId) {
+                console.log(`Playing sound for ${instrumentId}`);
+                // In a full implementation, this would play an actual sound file
+            }
+            
+            // Exit the chamber
+            exitChamber() {
+                if (!this.transitioningToExit) {
+                    this.transitioningToExit = true;
+                    
+                    this.showSubtitle("Your journey through the musical history of ancient Greece is complete...");
+                    
+                    setTimeout(() => {
+                        this.fadeOut(() => {
+                            // Show final message before ending
+                            this.showFinalMessage();
+                        });
+                    }, 3000);
+                }
+            }
+            
+            // Show final message
+            showFinalMessage() {
+                // Create a simple ending screen
+                const endingDiv = document.createElement('div');
+                endingDiv.style.position = 'absolute';
+                endingDiv.style.top = '0';
+                endingDiv.style.left = '0';
+                endingDiv.style.width = '100%';
+                endingDiv.style.height = '100%';
+                endingDiv.style.backgroundColor = 'black';
+                endingDiv.style.color = 'white';
+                endingDiv.style.display = 'flex';
+                endingDiv.style.flexDirection = 'column';
+                endingDiv.style.justifyContent = 'center';
+                endingDiv.style.alignItems = 'center';
+                endingDiv.style.padding = '20px';
+                endingDiv.style.textAlign = 'center';
+                
+                endingDiv.innerHTML = `
+                    <h1 style="color: #f5deb3; font-size: 36px; margin-bottom: 20px;">Journey Complete</h1>
+                    <p style="font-size: 20px; margin-bottom: 40px; max-width: 800px; line-height: 1.6;">
+                        You have discovered the musical heritage of ancient Greece - instruments that once connected
+                        mortals to the divine through their celestial melodies. From the lyre of Apollo to the aulos of
+                        Dionysus, these instruments continue to inspire us today.
+                    </p>
+                    <button id="restart-button" style="background-color: #8b5a2b; color: white; border: none; padding: 12px 24px; font-size: 18px; cursor: pointer; border-radius: 4px;">
+                        Return to Start
+                    </button>
+                `;
+                
+                document.body.appendChild(endingDiv);
+                
+                // Add event listener to restart button
+                document.getElementById('restart-button').addEventListener('click', () => {
+                    window.location.href = 'opening-scene.html';
+                });
+            }
+            
+            // Set camera to player perspective
+            setPlayerCamera() {
+                this.camera.position.set(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z + 2
+                );
+                this.camera.lookAt(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    0
+                );
+            }
+            
+            // Move camera to a position over time
+            moveCameraTo(position, lookAt, duration) {
+                const startPosition = this.camera.position.clone();
+                const startTime = Date.now();
+                
+                const animate = () => {
+                    const now = Date.now();
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    
+                    // Interpolate camera position
+                    this.camera.position.lerpVectors(startPosition, position, progress);
+                    
+                    // Look at target
+                    if (lookAt) {
+                        this.camera.lookAt(lookAt);
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    }
+                };
+                
+                animate();
+            }
+            
+            // Fade in from black
+            fadeIn() {
+                this.fadeOverlay.style.opacity = '0';
+            }
+            
+            // Fade out to black
+            fadeOut(callback) {
+                this.fadeOverlay.style.opacity = '1';
+                
+                setTimeout(() => {
+                    if (callback) callback();
+                }, 2000);
+            }
+            
+            // Show subtitle text
+            showSubtitle(text, duration) {
+                this.subtitle.textContent = text;
+                this.subtitle.style.opacity = '1';
+                
+                if (duration) {
+                    setTimeout(() => {
+                        this.hideSubtitle();
+                    }, duration);
+                }
+            }
+            
+            // Hide subtitle
+            hideSubtitle() {
+                this.subtitle.style.opacity = '0';
+            }
+            
+            // Show interaction prompt
+            showInteractionPrompt(text) {
+                this.interactionPrompt.textContent = text;
+                this.interactionPrompt.style.opacity = '1';
+                
+                setTimeout(() => {
+                    this.interactionPrompt.style.opacity = '0';
+                }, 5000);
+            }
+            
+            // Hide dialog
+            hideDialog() {
+                if (this.dialogBox) {
+                    this.dialogBox.style.display = 'none';
+                }
+            }
+            // Animation loop
+            animate() {
+                requestAnimationFrame(this.animate);
+                
+                // Handle player movement if enabled
+                if (this.playerCanMove) {
+                    this.updatePlayerMovement();
+                    this.checkInteractions();
+                }
+                
+                // Animate glowing auras
+                this.animateAuras();
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+            
+            // Animate glowing auras around instruments
+            animateAuras() {
+                const time = Date.now() * 0.001;
+                
+                this.scene.children.forEach(child => {
+                    if (child.geometry && child.geometry.type === 'SphereGeometry' && child.material.transparent) {
+                        child.material.opacity = 0.1 + 0.05 * Math.sin(time * 2);
+                        child.scale.setScalar(1 + 0.05 * Math.sin(time * 3));
+                    }
+                });
+            }
+            
+            // Update player movement based on input
+            updatePlayerMovement() {
+                const playerSpeed = this.moveSpeed;
+                
+                // Calculate forward/backward movement
+                if (this.moveForward) {
+                    this.player.position.z -= playerSpeed;
+                }
+                if (this.moveBackward) {
+                    this.player.position.z += playerSpeed;
+                }
+                
+                // Calculate left/right movement
+                if (this.moveLeft) {
+                    this.player.position.x -= playerSpeed;
+                }
+                if (this.moveRight) {
+                    this.player.position.x += playerSpeed;
+                }
+                
+                // Update camera position to follow player
+                this.camera.position.set(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z + 2
+                );
+                
+                // Look in the direction the player is facing (ahead of player, not toward center)
+                this.camera.lookAt(
+                    this.player.position.x,
+                    this.player.position.y + 0.5,
+                    this.player.position.z - 10  // Look ahead of player, not center
+                );
+                
+                // Limit player movement to chamber area
+                const maxRadius = 14;
+                const playerDistFromCenter = Math.sqrt(
+                    this.player.position.x * this.player.position.x + 
+                    this.player.position.z * this.player.position.z
+                );
+                
+                if (playerDistFromCenter > maxRadius) {
+                    const angle = Math.atan2(this.player.position.z, this.player.position.x);
+                    this.player.position.x = Math.cos(angle) * maxRadius;
+                    this.player.position.z = Math.sin(angle) * maxRadius;
+                }
+            }
+            
+            // Check for interactions with objects
+            checkInteractions() {
+                for (const obj of this.interactiveObjects) {
+                    const distance = this.player.position.distanceTo(obj.position);
+                    
+                    if (distance <= obj.radius) {
+                        // Show interaction prompt
+                        this.showInteractionPrompt(`Press E to interact with ${obj.type === 'portal' ? 'Portal' : obj.id}`);
+                        break;
+                    }
+                }
+            }
+            
+            // Handle window resize
+            onWindowResize() {
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            
+            // Handle keydown events
+            onKeyDown(event) {
+                switch (event.code) {
+                    case 'KeyW':
+                    case 'ArrowUp':
+                        this.moveForward = true;
+                        break;
+                        
+                    case 'KeyS':
+                    case 'ArrowDown':
+                        this.moveBackward = true;
+                        break;
+                        
+                    case 'KeyA':
+                    case 'ArrowLeft':
+                        this.moveLeft = true;
+                        break;
+                        
+                    case 'KeyD':
+                    case 'ArrowRight':
+                        this.moveRight = true;
+                        break;
+                        
+                    case 'KeyE':
+                        this.interact();
+                        break;
+                        
+                    case 'Space':
+                    case 'Enter':
+                        // Skip cutscene if in one
+                        if (this.inCutscene) {
+                            this.endCutscene();
+                        } else if (this.showingInfo) {
+                            this.closeInfoPanel();
+                        }
+                        break;
+                }
+            }
+            
+            // Handle keyup events
+            onKeyUp(event) {
+                switch (event.code) {
+                    case 'KeyW':
+                    case 'ArrowUp':
+                        this.moveForward = false;
+                        break;
+                        
+                    case 'KeyS':
+                    case 'ArrowDown':
+                        this.moveBackward = false;
+                        break;
+                        
+                    case 'KeyA':
+                    case 'ArrowLeft':
+                        this.moveLeft = false;
+                        break;
+                        
+                    case 'KeyD':
+                    case 'ArrowRight':
+                        this.moveRight = false;
+                        break;
+                }
+            }
+            
+            // Interact with nearest object
+            interact() {
+                if (this.inCutscene || this.showingInfo) return;
+                
+                let closestObj = null;
+                let closestDistance = Infinity;
+                
+                for (const obj of this.interactiveObjects) {
+                    const distance = this.player.position.distanceTo(obj.position);
+                    
+                    if (distance <= obj.radius && distance < closestDistance) {
                         closestDistance = distance;
                         closestObj = obj;
                     }
                 }
-            if (closestObj && closestObj.interact) {
-                closestObj.interact();
+                
+                if (closestObj && closestObj.interact) {
+                    closestObj.interact();
+                }
             }
         }
-    }
-    
-    // Initialize the scene manager
-    let sceneManager = new SceneManager();
-</script>
+            
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for scene manager and game manager to be ready
+            setTimeout(() => {
+                if (window.gameManager && window.gameManager.textDisplayController) {
+                    // Set a flag to ensure instructions only show once
+                    let instructionsShown = false;
+                    
+                    // Show interactive instructions after the cutscene completes
+                    window.sceneManager.onDialogComplete = function() {
+                        // Only show instructions if they haven't been shown already
+                        if (!instructionsShown) {
+                            instructionsShown = true;
+                            
+                            window.gameManager.textDisplayController.displayText(
+                                "Welcome to the Chamber of Ancient Instruments. Use WASD to move and E to interact with each instrument. Press SPACE to close information panels. Discover the rich history of Greek musical instruments!",
+                                "Guide",
+                                () => {
+                                    // After instructions are read, allow the player to move
+                                    window.sceneManager.playerCanMove = true;
+                                    
+                                    // Clear the onDialogComplete handler to prevent repeated instructions
+                                    window.sceneManager.onDialogComplete = null;
+                                }
+                            );
+                        }
+                    };
+                }
+            }, 1000);
+        });
+    </script>
+    <script> // Initialize the scene manager
+        let sceneManager = new SceneManager();</script>
 </body>
 </html>
